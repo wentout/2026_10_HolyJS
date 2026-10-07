@@ -1,0 +1,19 @@
+{
+  "name": "2026_10_holyjs_slidev",
+  "version": "1.0.0",
+  "description": "Elegant Observability — unchained for JavaScript and Node.js (HolyJS 2026 talk deck)",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "dev": "slidev --port 3050",
+    "build": "slidev build",
+    "export": "slidev export"
+  },
+  "dependencies": {
+    "@slidev/cli": "^53.0.0",
+    "@slidev/theme-default": "^0.25.0",
+    "d3": "^7.9.0",
+    "magic-snowflakes": "^7.1.0",
+    "vue": "^3.5.42"
+  }
+}

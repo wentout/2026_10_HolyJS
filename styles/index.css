@@ -1,0 +1,102 @@
+/* Deck-wide branded background (HolyJS 2026_05 bg_main.jpg)
+ * Slidev headmatter `defaults.background` does not propagate in v53 —
+ * CSS is the reliable deck-wide mechanism.
+ */
+.slidev-page {
+	background:
+		linear-gradient(rgba(0, 0, 0, 0.33), rgba(0, 0, 0, 0.53)),
+		url('/img/bg_main.jpg') center / cover no-repeat;
+}
+
+/* Code blocks: the GitHub Dark Default editor background (#0d1117),
+ * matching the shiki theme in setup/shiki.ts.
+ * Sizes are tuned for canvasWidth 700 (see slides.md headmatter).
+ */
+:root,
+html.dark {
+	--slidev-code-background: #0d1117;
+	--slidev-code-font-size: 14px;
+	--slidev-code-line-height: 20px;
+}
+
+/* Short snippets (up to ~9 rows) can afford a bigger font:
+ * add `class: code-lg` to the slide frontmatter.
+ */
+.code-lg {
+	--slidev-code-font-size: 16px;
+	--slidev-code-line-height: 23px;
+}
+
+/* For the tallest / widest code blocks (13+ rows) that would
+ * overflow the slide even at the deck default: add `class: code-fit`
+ * to the slide frontmatter.
+ */
+.code-fit {
+	--slidev-code-font-size: 12px;
+	--slidev-code-line-height: 17px;
+}
+
+/* On dense code slides the default h1 is too tall and gets clipped;
+ * shrink it so title + 13-16 code rows fit the 700px canvas.
+ */
+.code-fit h1 {
+	font-size: 1.55rem;
+	line-height: 1.2;
+	margin-bottom: 0.5rem;
+}
+
+/* Slides whose image is the centred background (`layout: image`, the
+ * layout root carries an inline background-image) get centred titles.
+ */
+.slidev-layout[style*="background-image"] h1,
+.slidev-layout[style*="background-image"] h2 {
+	text-align: center;
+}
+
+/* `layout: image` slides WITH a title: pin the picture right UNDER the
+ * title (fixed offset from the top), not to the slide bottom. Sized by
+ * height so it keeps its aspect ratio. Titles on these slides are kept
+ * small enough to always stay on one line, so the offset is exact.
+ * Titleless image slides keep their frontmatter sizing/centring.
+ */
+.slidev-layout[style*="background-image"]:has(h1, h2) {
+	background-position: center 4.75rem !important;
+	background-size: auto 72% !important;
+	padding: 0.75rem 1.5rem;
+}
+
+.slidev-layout[style*="background-image"] h1 {
+	font-size: 1.8rem;
+	line-height: 1.2;
+	margin-bottom: 0.5rem;
+}
+
+/* «Жизненный Цикл» slide: the ASCII timelines ported from
+ * 2024_05_SPbFrontEnd (timelineText2 / timelineTextBlack2).
+ * The dim rows are a background texture under the chart, hence dark
+ * gray — the original was black text on a light background.
+ */
+.timeline-hl h1,
+.timeline-dim h1 {
+	font-size: 18px;
+	font-weight: normal;
+	line-height: 22px;
+	margin: 0;
+	white-space: nowrap;
+}
+
+.timeline-dim {
+	color: #121212;
+}
+
+/* The chart overlays the bottom rows, like chartAbs2 at top:45vh
+ * in the original deck.
+ */
+.timeline-chart {
+	position: absolute;
+	bottom: 0.5rem;
+	left: 0;
+	right: 0;
+	display: flex;
+	justify-content: center;
+}

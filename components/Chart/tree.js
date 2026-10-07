@@ -1,0 +1,156 @@
+import * as d3 from 'd3';
+
+// Collapsible d3 tree, ported from 2024_05_SPbFrontEnd slider
+// (src/components/Chart/tree.js). Changes: d3 v7 event signature
+// (d3.event is gone), colours tuned for the dark deck background.
+const tree = function ({
+	chartData,
+	dy,
+	dx,
+	margin,
+	width,
+	stash,
+}) {
+
+	const root = d3.hierarchy(chartData);
+
+	const treeMaker = d3
+		.tree()
+		.nodeSize([dy, dx]);
+	const diagonal = d3
+		.linkHorizontal()
+		.x(d => d.y)
+		.y(d => d.x);
+
+	root.x0 = dy;
+	root.y0 = 0;
+	root.descendants().forEach((d, i) => {
+		d.id = i;
+		d._children = d.children;
+		if (d.depth && stash && stash.includes(d.data.name)) {
+			d.children = null;
+		}
+	});
+
+	const svg = d3.create('svg')
+		.attr('viewBox', [-margin.left, -margin.top, width, dx])
+		.style('font', '10px sans-serif')
+		.style('user-select', 'none');
+
+	const gLink = svg.append('g')
+		.attr('fill', 'none')
+		.attr('stroke', '#999')
+		.attr('stroke-opacity', 0.5)
+		.attr('stroke-width', 1.5);
+
+	const gNode = svg.append('g')
+		.attr('cursor', 'pointer')
+		.attr('pointer-events', 'all');
+
+	function update (source, duration = 250) {
+
+		const nodes = root.descendants().reverse();
+		const links = root.links();
+
+		// Compute the new tree layout.
+		treeMaker(root);
+
+		let left = root;
+		let right = root;
+		root.eachBefore(nodeEl => {
+			if (nodeEl.x < left.x) left = nodeEl;
+			if (nodeEl.x > right.x) right = nodeEl;
+		});
+
+		const height = right.x - left.x + margin.top + margin.bottom;
+
+		const transition = svg.transition()
+			.duration(duration)
+			.attr('viewBox', [-margin.left, left.x - margin.top, width, height])
+			.tween('resize', window.ResizeObserver ? null : () => () => svg.dispatch('toggle'));
+
+		// Update the nodes…
+		const node = gNode.selectAll('g').data(nodes, d => d.id);
+
+		// Enter any new nodes at the parent's previous position.
+		const nodeEnter = node.enter().append('g')
+			.attr('transform', (/*d*/) => `translate(${source.y0},${source.x0})`)
+			.attr('fill-opacity', 10)
+			.attr('stroke-opacity', 10)
+			.on('click', (event, d) => {
+				if (d._children) {
+					d.children = d.children ? null : d._children;
+				} else {
+					const pc = d.parent.children.filter(child => child !== d);
+					d.parent.children = pc.length ? pc : null;
+				}
+				update(d, event.altKey ? 2500 : 250);
+			});
+
+		nodeEnter.append('circle')
+			.attr('r', 7)
+			.attr('fill', d => (d._children ? '#aaa' : '#ddd'))
+			.attr('stroke-width', 25);
+
+		nodeEnter.append('text')
+			.attr('dy', '0.41em')
+			.attr('x', d => (d._children ? -9 : 9))
+			.attr('text-anchor', d => (d._children ? 'end' : 'start'))
+			.attr('fill', '#eee')
+			.text(d => d.data.name)
+			.clone(true)
+			.lower()
+			.attr('stroke-linejoin', 'round')
+			.attr('stroke-width', 3.5)
+			.attr('stroke', d => d.data.stroke || '#111');
+
+		// Transition nodes to their new position.
+		node.merge(nodeEnter).transition(transition)
+			.attr('transform', d => `translate(${d.y},${d.x})`)
+			.attr('fill-opacity', 100)
+			.attr('stroke-opacity', 1);
+
+		// Transition exiting nodes to the parent's new position.
+		node
+			.exit()
+			.transition(transition)
+			.remove()
+			.attr('transform', (/*d*/) => `translate(${source.y},${source.x})`)
+			.attr('fill-opacity', 0)
+			.attr('stroke-opacity', 0);
+
+		// Update the links…
+		const link = gLink.selectAll('path').data(links, d => d.target.id);
+
+		// Enter any new links at the parent's previous position.
+		const linkEnter = link.enter().append('path')
+			.attr('d', (/*d*/) => {
+				const o = { x : source.x0, y : source.y0 };
+				return diagonal({ source : o, target : o });
+			});
+
+		// Transition links to their new position.
+		link.merge(linkEnter).transition(transition)
+			.attr('d', diagonal);
+
+		// Transition exiting nodes to the parent's new position.
+		link.exit().transition(transition)
+			.remove()
+			.attr('d', (/*d*/) => {
+				const o = { x : source.x, y : source.y };
+				return diagonal({ source : o, target : o });
+			});
+
+		// Stash the old positions for transition.
+		root.eachBefore(d => {
+			d.x0 = d.x;
+			d.y0 = d.y;
+		});
+	}
+
+	update(root);
+
+	return svg.node();
+};
+
+export default tree;
