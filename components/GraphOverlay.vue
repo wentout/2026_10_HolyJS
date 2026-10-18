@@ -48,11 +48,17 @@ onMounted(() => {
 	document.body.appendChild(iframe);
 	iframe.addEventListener('load', () => {
 		try {
-			iframe.contentWindow.addEventListener('keydown', (event) => {
+			// keyup must be forwarded too: Slidev tracks held keys
+			// (useMagicKeys) and auto-repeats while one is pressed —
+			// a keydown without its keyup leaves the key stuck and
+			// the deck runs away through the slides
+			const forward = (event) => {
 				if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') { return; }
 				event.preventDefault();
-				window.dispatchEvent(new KeyboardEvent('keydown', { key: event.key, bubbles: true }));
-			});
+				window.dispatchEvent(new KeyboardEvent(event.type, { key: event.key, bubbles: true }));
+			};
+			iframe.contentWindow.addEventListener('keydown', forward);
+			iframe.contentWindow.addEventListener('keyup', forward);
 		} catch (e) { /* cross-origin: deck nav resumes on focus outside */ }
 	});
 	window.addEventListener('hashchange', update);

@@ -17,7 +17,7 @@ layout: cover
 layout: default
 ---
 
-# немного обо мне
+# Немного обо мне
 
 <div class="grid grid-cols-[5fr_4fr] gap-6 mt-4 items-center">
 <div class="text-lg leading-relaxed pl-4 [&_li]:whitespace-nowrap">
@@ -26,11 +26,11 @@ layout: default
 
 - застал времена первой спецификации
 - то есть занимаюсь JS четверть века
-- немного age'изма: да мне почти 45
 - родился и живу в Ростове-на-Дону
-- да, там тоже есть IT и инженеры
 - до 30 занимался IT-экономикой
 - потом как-то &laquo;залип&raquo; в код и  ...
+- и вот программирую уже 15 лет
+- пришёл рассказать про последние 10
 
 </v-clicks>
 
@@ -44,7 +44,7 @@ layout: default
 layout: center
 ---
 
-# о чём и как я буду говорить
+# О чём и как я буду говорить
 
 <v-clicks>
 
@@ -72,7 +72,7 @@ image: /img/ukit_main.png
 backgroundSize: 55%
 ---
 
-# работал в этой компании
+# Работал в этой компании
 
 
 ---
@@ -81,40 +81,7 @@ image: /img/team.jpg
 backgroundSize: 55%
 ---
 
-# с этими хорошими людьми
-
-
----
-layout: image
-image: /img/philip_roberts.png
-backgroundSize: 55%
----
-
-# ничто не предвещало проблем
-
----
-layout: image
-image: /img/s500.jpg
-backgroundSize: 55%
----
-
-# что-то где-то намертво зависало
-
----
-layout: image
-image: /img/s500.3.jpg
-backgroundSize: 55%
----
-
-# помидорки пробивали перцентиль
-
----
-layout: image
-image: /img/real_stack.png
-backgroundSize: 55%
----
-
-# в логи тихо сыпались ошибки
+# С этими хорошими людьми
 
 ---
 layout: image
@@ -122,7 +89,32 @@ image: /img/tips.gif
 backgroundSize: 55%
 ---
 
-# обычный рабочий процесс
+# Обычный рабочий процесс
+
+---
+layout: image
+image: /img/s500.jpg
+backgroundSize: 55%
+---
+
+# Что-то где-то намертво зависало
+
+---
+layout: image
+image: /img/s500.3.jpg
+backgroundSize: 55%
+---
+
+# Помидорки пробивали перцентиль
+
+---
+layout: image
+image: /img/real_stack.png
+backgroundSize: 55%
+---
+
+# В логи тихо сыпались ошибки
+
 
 ---
 layout: image
@@ -130,21 +122,21 @@ image: /img/giphy.gif
 backgroundSize: 55%
 ---
 
-# обычный рабочий процесс
+# Обычный рабочий процесс
 
 ---
 layout: image
-image: /img/task_types_chart.png
+image: /img/chart_tasks_bugs.svg
 backgroundSize: 55%
 ---
 
-# взгляд со стороны Jira
+# Взгляд со стороны Jira
 
 ---
 layout: center
 ---
 
-# итого: обычный вторник
+# Итого: обычный вторник
 
 <v-clicks>
 
@@ -164,6 +156,7 @@ layout: center
 
 ---
 layout: center
+class: code-xl
 ---
 
 # <carbon-checkmark-filled class="text-green-400 inline" /> Happy Path
@@ -180,6 +173,7 @@ const sum = new Sum( [ 1, 1 ] );
 
 ---
 layout: center
+class: code-xl
 ---
 
 # <carbon-error-filled class="text-red-400 inline" /> Uncaught Exception
@@ -202,15 +196,16 @@ new Sum (null);
 
 ---
 layout: center
+class: code-xl
 ---
 
 # <carbon-view-off-filled class="text-yellow-400 inline" /> неверный расчёт
 
 ```js
 // самый типичный пример
-
-const sum = new Sum([ '1', 1 ]);
 // твой родной язык JavaScript что-ли?
+const sum = new Sum([ '1', 1 ]);
+// и так вот дальше потеряли "почему"
 JSON.parse(JSON.stringify(sum));
 ```
 
@@ -236,12 +231,18 @@ layout: center
 - и воспроизвести её не получится
   
 </v-clicks>
-<br/>
 <v-click>
 
-# бизнес теряет деньги
+## бизнес теряет деньги
 
 </v-click>
+<v-clicks>
+
+- на неоправданных ожиданиях клиентов
+- на долгой отладке и дорогой разработке
+  
+</v-clicks>
+
 
 
 ---
@@ -259,15 +260,15 @@ image: /img/js-everywhere.jpg
 backgroundSize: 42%
 ---
 
-# чёрная кошка в тёмной комнате
+# Чёрная кошка в тёмной комнате
 
 ---
 layout: center
 class: code-fit
 ---
 
-# это были времена callback hell
-
+# Это были времена callback hell
+ и всё выглядело как-то так
 <table>
 <tr>
 <td>
@@ -278,7 +279,8 @@ step1((cb) => {
 		step3((cb) => {
 			step4((cb) => {
 				step5((cb) => {
-					cb(result)// какая-то ещё работа
+					// какая-то ещё работа
+					cb(result)
 				});
 			});
 		});
@@ -300,6 +302,7 @@ async.parallel([
 
 async.series([
 	function(callback) { ... },
+	function(callback) { ... },
 	function(callback) { ... }
 ]);
 ```
@@ -311,12 +314,65 @@ async.series([
 
 </table>
 
+
 ---
 layout: center
 class: code-fit
 ---
 
-# подумал, что можно всё обернуть
+# И если присмотреться внимательней ...
+то можно было увидеть как оно выполняется
+<table>
+<tr>
+<td>
+
+```ts
+step1((cb) => {							↓
+	step2((cb) => {						↓
+		step3((cb) => {					↓
+			step4((cb) => {				↓
+				step5((cb) => { 		↓
+					// какая-то ещё работа
+					cb(result);
+				});
+			});
+		});
+	});
+});
+```
+
+</td>
+<td>
+
+```ts
+async.parallel([                ↓
+    function(callback) { ... }, →
+    function(callback) { ... }, →
+], function(err, results) {     ↓
+    // optional callback
+});
+
+async.series([
+	function(callback) { ... },  ↓
+	function(callback) { ... },  ↓
+	function(callback) { ... },  ↓
+]);
+```
+
+</td>
+
+</tr>
+
+</table>
+
+---
+layout: center
+class: code-fit
+---
+
+# И можно ли обернуть этот flow ?
+
+этот самый Execution Flow, трасу пути выполнения
 
 ```ts
 const wrap = function ( cb, ...data ) {
@@ -325,17 +381,14 @@ const wrap = function ( cb, ...data ) {
 	// то wrap'ает такие элементы
 
 	const result = cb.call(this, ...data );
-
-	// проверяет typeof result
-	// и тоже  wrap'ает
+	// проверяет typeof result и тоже  wrap'ает
 	// если видит, что это function
-
 	return result;
 };
 
 ```
 
-единичный вызов &laquo;расползается&raquo; по коду
+чтобы следить за контекстом ошибки до её появления
 
 
 ---
@@ -343,23 +396,23 @@ layout: center
 class: code-fit
 ---
 
-# обёртка в реальном коде
+# Обёртка в реальном коде выглядит как-то так
 
 ```ts
 const wrap = function (cb, ...data) {
 	// декорирует cb вглубь data
 };
 
-const fn = (x: number) => x * 2;
+const fn = (x: number) => x * 2;                     ← сама работа
 
 const requestInstance = {};
 const serviceInstance = {};
 
 // обёртка привязана к истории requestInstance
-const w1 = wrap(fn, requestInstance);
+const w1 = wrap(fn, requestInstance);                  контекст 1
 
 // ПРОБЛЕМА: попытка обернуть с ДРУГИМ контекстом !
-const w2 = wrap(w1, serviceInstance);
+const w2 = wrap(w1, serviceInstance);                  контекст 2
 ```
 
 
@@ -368,34 +421,31 @@ layout: center
 class: code-fit
 ---
 
-# Но! Реальная проблема Хуже ...
+# Но! Есть Проблема ... Потому, что Это НЕ ответ
 
 ```ts
 var saved;
-
-const doWork = function () { /* какая-то работа */ };
+const doWork = function () {   /* какая-то работа */   };
 
 const onRequest = wrap((cb) => {
 	saved = cb;
-}, requestInstance);     // контекст requestInstance
+}, requestInstance);                           ← контекст requestInstance
 
 onRequest(() => doWork());
-
-// запрос A закончился но cb~saved выжил 
-// и теперь "прорастает" сквозь код в других местах
-
+// запрос A закончился но cb ~ saved "выжил" и продолжит
+// теперь "протекать" сквозь код в других местах выполнения
 const runJob = wrap((job) => job(), serviceInstance);
-runJob( saved );
+
+runJob( saved );                               ← продолжает прилипать к коду !!!
 ```
 
 ---
 layout: image
-image: /img/ne4to_main.webp
+image: /img/grafana.jpg
 backgroundSize: 55%
 ---
 
-# тема интересовала не только меня
-
+# ... тема интересовала многих ...
 
 
 ---
@@ -412,7 +462,7 @@ image: /img/issue249.png
 backgroundSize: 55%
 ---
 
-# в итоге оказалось, оно не работает
+# В итоге оказалось, оно не работает
 
 
 ---
@@ -421,7 +471,7 @@ image: /img/context-dive.png
 backgroundSize: 55%
 ---
 
-# но решение я всё-таки запилил
+# Но решение я всё-таки запилил
 
 
 ---
@@ -439,7 +489,7 @@ image: /img/dip.png
 backgroundSize: 45%
 ---
 
-# в итоге я пошёл своим путём
+# В итоге я пошёл своим путём
 
 
 ---
@@ -450,13 +500,57 @@ layout: section
 
 ## Глава 3: → 2019 →
 
+
 ---
 layout: image
 image: /img/Transitive_Closure.svg
 backgroundSize: 55%
 ---
 
-# контекст &mdash; это данные
+# Контекст &mdash; это данные
+
+---
+layout: center
+class: code-fit
+---
+
+# Контекст &mdash; это данные
+
+<table>
+<tr valign = "top">
+<td width = "58%">
+
+<img src="/img/Transitive_Closure.svg" width="75%" />
+
+</td>
+<td>
+
+<div style = "position: relative; padding-top: 15%; padding-left: -45%; margin-left: -25%">
+
+<v-clicks>
+
+# Direct Acyclic Graph
+
+# !== Execution Flow
+
+</v-clicks>
+<br />
+<v-click>
+
+
+### т.к. он описывает
+
+<h1 style = "margin-top: 3%; font-size: 250%; font-weight: bold"> Data Flow </h1>
+
+</v-click>
+
+</div>
+
+</td>
+</tr>
+</table>
+
+
 
 ---
 layout: image
@@ -464,15 +558,7 @@ image: /img/GanttProject.png
 backgroundSize: 55%
 ---
 
-# данные, распределённые во времени
-
----
-layout: image
-image: /img/GanttChart.png
-backgroundSize: 55%
----
-
-# и это уже давно всё придумано
+# Данные, распределённые во времени
 
 
 ---
@@ -481,53 +567,18 @@ image: /img/PrototypeChain.png
 backgroundSize: 55%
 ---
 
-# и в JavaScript есть конструкт
-
----
-layout: image
-image: /img/EichObjects.png
-backgroundSize: 55%
----
-
-# и своеобразная философия
-
-
----
-layout: image
-image: /img/EichNullUndefined.png
-backgroundSize: 55%
----
-
-# и есть объяснимое поведение
-
----
-layout: image
-image: /img/inheritance.png
-backgroundSize: 55%
----
-
-# я писал про это статью
-
----
-layout: default
-title: JS_Object_Topology
----
-
-<h1 class="text-center">коротко: JS всё объекты</h1>
-
-<div class="flex justify-center">
-  <img src="/img/JS_Object_Topology.svg" style="filter: invert(1)" width = "90%" />
-</div>
+# И в JavaScript есть конструкт
 
 
 ---
 layout: center
 ---
 
-### идентичность данных
+## идентичность данных
+
 <v-click>
 
-## задаётся через наследование
+# задаётся через наследование
 
 </v-click>
 
@@ -549,25 +600,71 @@ Object.getPrototypeOf(
 
 
 ---
+layout: image
+image: /img/EichObjects.png
+backgroundSize: 55%
+---
+
+# И своеобразная философия
+
+
+---
+layout: image
+image: /img/inheritance.png
+backgroundSize: 55%
+---
+
+# ... и я писал про это статью ...
+
+---
+layout: default
+title: JS_Object_Topology
+---
+
+<h1 class="text-center">... коротко: JS всё объекты ...</h1>
+
+<div class="flex justify-center">
+  <img src="/img/JS_Object_Topology.svg" style="filter: invert(1)" width = "90%" />
+</div>
+
+
+---
+layout: image
+image: /img/EichNullUndefined.png
+backgroundSize: 55%
+---
+
+# И есть объяснимое поведение
+
+
+---
 layout: center
 ---
 
-# Как построить : Trie ~ DAG
+# Но как на этом сделать : DAG ?
 
-
-<table>
+<table style = "margin-top: -5%">
 <tr>
 <td width = "67%" >
 
 <v-clicks>
 
-- `setPrototypeOf` — не подходит
-- т.к. нужны `(...args)` конструкторов
-- `instanceOf` может означать identity
-- если использовать `Symbol.hasInstance`
-- и ещё &laquo;залочить&raquo; `constructor.name`
-- и если использовать Proxy как вход
-- `new` поможет выделить сам процесс
+- т.к. `setPrototypeOf` — не подходит
+- и ещё нужны `(...args)` конструкторов
+- и `instanceOf` &laquo;такое себе&raquo; identity ...
+
+</v-clicks>
+<v-click>
+
+хотя ... если ... попробовать ...
+
+</v-click>
+<v-clicks>
+
+- использовать `Symbol.hasInstance`
+- и &laquo;привязаться&raquo; `constructor.name`
+- и использовать Proxy для отслеживания
+- то `new` поможет идентификации
 
 </v-clicks>
 </td>
@@ -581,28 +678,29 @@ layout: center
 </table>
 
 
+
+
 ---
 layout: center
-class: code-lg
+class: code-xl
 ---
 
-# и показать идею кодом ...
+# И как показать идею кодом ...
+
+<v-clicks>
 
 ```ts
 // первое поколение
 const user = new User({ name: 'Ada' });
-
 // второе поколение
 const admin = new user.Admin({ role: 'root' });
 
 Object.getPrototypeOf( admin ) // → user
 ```
 
-<v-click>
+ &laquo; память &raquo; истории объекта теперь лежит в Prototype Chain.
 
-Теперь Prototype Chain **и есть** &laquo; память &raquo; объекта.
-
-</v-click>
+</v-clicks>
 
 
 ---
@@ -611,11 +709,11 @@ image: /img/Mnemonica.png
 backgroundSize: 55%
 ---
 
-# так появилась Mnemonica
+# Так появилась Mnemonica
 
 
 ---
-layout: center
+layout: default
 class: code-lg
 ---
 
@@ -634,7 +732,7 @@ const Admin = User.define('Admin', function (data) {
 ```
 
 ---
-layout: center
+layout: default
 class: code-lg
 ---
 
@@ -657,7 +755,7 @@ class Admin { /.../ }
 layout: default
 ---
 
-# а в Runtime это — дерево
+# в Runtime это — дерево
 
 ```ts
 const user  = new User({ name: 'Ada' });
@@ -675,7 +773,7 @@ const god   = new admin.SuperAdmin();
 layout: default
 ---
 
-# поэтому есть &laquo;Жизненный Цикл&raquo;
+# И это и есть &laquo;Жизненный Цикл&raquo;
 
 <div class="timeline-hl">
 
@@ -740,11 +838,40 @@ layout: center
 
 </v-clicks>
 
+
+---
+layout: image
+image: /img/TypesInPrototypes.png
+backgroundSize: 55%
+---
+
+# про это был отдельный доклад
+
+
+---
+layout: center
+class: code-xl
+---
+
+# с паттерном Identity
+
+
+```ts
+export type ConstructorDefinition <T> 
+	=	{
+			new(): T
+		} | { 
+			( this: T,
+				...args: unknown[]): void
+		};
+```
+
+
 ---
 layout: center
 ---
 
-# Учим TS наследованию
+# как-то так это выглядело
 
 ```ts
 type Proto<P, T> =
@@ -763,59 +890,44 @@ const define = function <P extends object, T>(
 ```
 
 
----
-layout: image
-image: /img/TypesInPrototypes.png
-backgroundSize: 55%
----
-
-# про это был отдельный доклад
-
 
 ---
 layout: center
 ---
 
-# паттерном Identity
+# Но с Identity это лишь ...
+
+<v-clicks>
+
+- ## `.apply` &mdash; аргументы как .apply
+- ## `.call`  &mdash; аргументы как .call
+- ## `.bind`  &mdash; отложенный вызов
+
+</v-clicks>
+<br />
+<v-click>
 
 
 ```ts
-
 export type ConstructorDefinition <T> =
-	{
-		new(): T
-	} | { 
+	{ new(): T } | { 
 		( this: T, ...args: unknown[]): void
 	};
 ```
 
-<v-clicks>
-
-- `.apply` &mdash; аргументы как .apply
-- `.call`  &mdash; аргументы как .call
-- `.bind`  &mdash; отложенный вызов
-
-</v-clicks>
-
-
----
-layout: image
-image: /img/Typeomatica.png
-backgroundSize: 55%
----
-
-# и библиотека про строгую типизацию
+</v-click>
 
 
 ---
 layout: center
+class: code-xl
 ---
 
-## Declaration Merging : Registry
+## Поэтому Declaration Merging : Registry
 
 ```ts
 // читаем исходники и генерирует реестр
-
+// код merge'им через tsconfig.json
 interface TypeRegistry {
 
 	Root: IDefinitorInstance<'Root', /* … */>
@@ -825,21 +937,12 @@ interface TypeRegistry {
 }
 ```
 
-<v-click>
-
-TS Types генерируются из кода для tsconfig.json
-
-</v-click>
-
-
-
-
 ---
 layout: statement
 title: tactica-nestjs
 ---
 
-# DEMO 1
+# <br /> DEMO 1
 
 ## Mnemographica: 3D
 
@@ -877,6 +980,7 @@ layout: center
 
 - контекст привязан к идентичности экземпляра
 - пересечение границ видно в графе вызовов
+- ... profit ...
 
 </v-clicks>
 
@@ -899,7 +1003,7 @@ layout: center
 layout: statement
 ---
 
-# DEMO 2
+# <br /> DEMO 2
 
 ## Nest.JS: живые трассы
 
@@ -908,9 +1012,10 @@ layout: statement
 layout: statement
 ---
 
-# DEMO 3
+# <br /> DEMO 3
+# Exec Flow → DFD
+## aka &laquo; что по там фронту &raquo;
 
-## что по фронту
 
 ---
 layout: center
@@ -930,7 +1035,7 @@ layout: section
 layout: center
 ---
 
-# Высота птичьего полёта
+# <br /> &laquo; высота птичьего полёта &raquo;
 
 <v-clicks>
 
@@ -945,7 +1050,7 @@ layout: center
 layout: center
 ---
 
-# AI пишет код быстрее,<br/> чем мы проверяем
+# <br /> AI пишет код быстрее,<br/> чем мы проверяем
 
 <v-clicks>
 
@@ -955,26 +1060,30 @@ layout: center
 
 </v-clicks>
 
----
-layout: center
----
-
-# AI доволен
-
-
-<v-click>
-
-## « It's a genuinely strange and good feeling<br/> to be shown a picture of my own reasoning<br/> about a codebase. »
-
-</v-click>
 
 ---
 layout: statement
 ---
 
-# DEMO 4
+# <br /> DEMO 4
 
 ## нечто большое
+
+
+---
+layout: center
+---
+
+
+# <br /> <br /> AI доволен
+
+
+<v-click>
+
+### « It's a genuinely strange and good feeling<br/> to be shown a picture of my own reasoning<br/> about a codebase. »
+
+</v-click>
+
 
 ---
 layout: center
@@ -983,18 +1092,12 @@ layout: center
 <GraphOverlay src="/real-work-graph.html" title="Real Work Graph" />
 
 ---
-layout: center
+layout: image
+image: /img/mythographica.png
 ---
 
-# Что попробовать дома
+# https : // <b> mythographica </b> .github.io
 
-<v-clicks>
-
-- `npm i mnemonica`
-- `npx tactica` на своём проекте
-- Mnemographica — инструкция в репозитории
-
-</v-clicks>
 
 ---
 layout: center
@@ -1014,8 +1117,34 @@ layout: center
 </div>
 
 
+
+
+---
+layout: end
+---
+
+# <br /> <br /> Спасибо!
+
+
 ---
 layout: center
+---
+
+# <br /> <br /> Q & A
+
+### 10 минут
+
+---
+layout: center
+---
+
+# FIN
+
+
+
+---
+layout: center
+hide: true
 ---
 
 # Итоги
@@ -1029,29 +1158,6 @@ layout: center
 - простая цепочка обработки ошибок
 
 </v-clicks>
-
-
----
-layout: end
----
-
-# Спасибо!
-
-
----
-layout: center
----
-
-# Q & A
-
-### 10 минут
-
----
-layout: center
----
-
-# FIN
-
 
 
 ---
@@ -1128,3 +1234,13 @@ const parsed = data.a.b.c
 Самая частая ошибка в проде. И самая необъяснимая.
 
 </v-click>
+
+
+--- 
+hide: true
+layout: image
+image: /img/Typeomatica.png
+backgroundSize: 55%
+---
+
+#  библиотека про строгую типизацию

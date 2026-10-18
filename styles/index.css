@@ -27,6 +27,14 @@ html.dark {
 	--slidev-code-line-height: 23px;
 }
 
+/* Very short snippets (~7 rows) on otherwise empty slides can go
+ * bigger still: add `class: code-xl` to the slide frontmatter.
+ */
+.code-xl {
+	--slidev-code-font-size: 20px;
+	--slidev-code-line-height: 28px;
+}
+
 /* For the tallest / widest code blocks (13+ rows) that would
  * overflow the slide even at the deck default: add `class: code-fit`
  * to the slide frontmatter.
@@ -53,16 +61,56 @@ html.dark {
 	text-align: center;
 }
 
+/* Every slide's content starts at the same top point: neutralize the
+ * per-layout vertical centering (grid place-content on center/end,
+ * my-auto wrappers on statement/quote/...). Exempt the bookend slides:
+ * cover (talk title), section (chapters) and end (closing) stay
+ * vertically centered.
+ */
+.slidev-layout:not(.cover):not(.section):not(.end) {
+	align-content: start;
+}
+
+.slidev-layout:not(.cover):not(.section):not(.end) > .my-auto {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+/* Inline icons (carbon-*) inside slide titles render noticeably larger
+ * than the h1 glyphs; cap them at the title font size and align them
+ * to the text baseline so they read as part of the headline.
+ */
+.slidev-layout h1 svg {
+	height: 0.9em;
+	width: 0.9em;
+	vertical-align: -0.08em;
+}
+
+/* Slide titles ride higher than the stock position: the default 2.5rem
+ * top padding leaves too much air above the h1. translate (NOT margin
+ * or padding) so the content below keeps its exact position — only the
+ * gap above the title shrinks, the gap below it grows. Matches the h1
+ * only when it is the slide's first element, either directly or
+ * inside the layout's wrapper div (center/statement my-auto).
+ */
+.slidev-layout:not(.cover):not(.section):not(.end) > h1:first-child,
+.slidev-layout:not(.cover):not(.section):not(.end) > div:first-child > h1:first-child {
+	translate: 0 -1.25rem;
+}
+
 /* `layout: image` slides WITH a title: pin the picture right UNDER the
  * title (fixed offset from the top), not to the slide bottom. Sized by
  * height so it keeps its aspect ratio. Titles on these slides are kept
  * small enough to always stay on one line, so the offset is exact.
- * Titleless image slides keep their frontmatter sizing/centring.
+ * Padding matches the deck-wide py-10 px-14 so the title sits at the
+ * same top gap as every other slide; 5.2rem = 2.5 padding + 2.16 title
+ * + 0.5 title margin. Titleless image slides keep their frontmatter
+ * sizing/centring.
  */
 .slidev-layout[style*="background-image"]:has(h1, h2) {
-	background-position: center 4.75rem !important;
+	background-position: center 5.2rem !important;
 	background-size: auto 72% !important;
-	padding: 0.75rem 1.5rem;
+	padding: 2.5rem 3.5rem;
 }
 
 .slidev-layout[style*="background-image"] h1 {
