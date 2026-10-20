@@ -1,6 +1,6 @@
 ---
 theme: default
-title: Elegant Observability — unchained for JavaScript and Node.js
+title: Elegant Observability &ndash; unchained for JavaScript and Node.js
 colorSchema: dark
 canvasWidth: 700
 duration: 40min
@@ -12,6 +12,7 @@ layout: cover
 # Elegant Observability
 
 ### unchained for JavaScript and Node.js
+
 
 ---
 layout: default
@@ -40,21 +41,31 @@ layout: default
 </div>
 </div>
 
+
+---
+layout: image
+image: /img/open_telemetry.png
+backgroundSize: 55%
+---
+
+# Observability: Open Telemetry
+
+
 ---
 layout: center
 ---
 
-# О чём и как я буду говорить
+# Observability для меня
 
 <v-clicks>
 
-- 2016: момент, когда я начал заниматься этой проблемой
-- 2018: время, когда я я решал её самым &laquo;наивным&raquo; способом
-- 2019: наконец-то понял, что так не получится и &laquo;как нужно&raquo;
-- 2021 → 2023: адаптировал Runtime решение для TypeScript
-- 2024 → 2026: рассказывал о находках и пробовал визуализацию
-- 2026: появился AI, всё решилось:  Observability &laquo;наглядно&raquo;
-- Выводы, которые можно посчитать
+- 2016: впервые столкнулся с нехваткой Observability
+- 2018: время, когда я пробовал &laquo;наивные&raquo; решения
+- 2019: понял &laquo; с какой стороны &raquo; делать Observable
+- 2021 → 2023: делал Runtime и бодался с TypeScript
+- 2024 → 2026: рассказывал о различных находках
+- 2026: появился AI и подход заработал &laquo;наглядно&raquo;
+- Выводы: что это значит и как попробовать
 
 </v-clicks>
 
@@ -128,6 +139,7 @@ backgroundSize: 55%
 layout: image
 image: /img/chart_tasks_bugs.svg
 backgroundSize: 55%
+class: invert-diagram
 ---
 
 # Взгляд со стороны Jira
@@ -188,8 +200,8 @@ new Sum (null);
 
 <v-clicks>
 
-- Stack Trace говорит, **ГДЕ** упало
-- но на **КАКИХ ДАННЫХ** — не говорит
+- Stack Trace говорит **ГДЕ** упало
+- но на **КАКИХ ДАННЫХ** &ndash; не говорит
 
 </v-clicks>
 
@@ -199,7 +211,7 @@ layout: center
 class: code-xl
 ---
 
-# <carbon-view-off-filled class="text-yellow-400 inline" /> неверный расчёт
+# <carbon-view-off-filled class="text-yellow-400 inline" /> и есть неверный расчёт
 
 ```js
 // самый типичный пример
@@ -211,7 +223,7 @@ JSON.parse(JSON.stringify(sum));
 
 <v-clicks>
 
-- так как &mdash; это **happy path**
+- так как &ndash; это **happy path**
 - поэтому ни исключения, ни лога
 - и почему оно так было тоже ...
 
@@ -226,7 +238,7 @@ layout: center
 
 <v-clicks>
 
-- мы не знаем какие данные были
+- мы не знаем, какие данные были
 - мы теряем контекст момента ошибки
 - и воспроизвести её не получится
   
@@ -268,8 +280,10 @@ class: code-fit
 ---
 
 # Это были времена callback hell
- и всё выглядело как-то так
+ и всё выглядело как-то так, <v-click> или через Caolan Async </v-click>
 <table>
+
+<tbody>
 <tr>
 <td>
 
@@ -294,16 +308,16 @@ step1((cb) => {
 
 ```ts
 async.parallel([
-    function(callback) { ... },
-    function(callback) { ... }
+    function(cb) { ... },
+    function(cb) { ... }
 ], function(err, results) {
-    // optional callback
+    // optional
 });
 
 async.series([
-	function(callback) { ... },
-	function(callback) { ... },
-	function(callback) { ... }
+	function(cb) { ... },
+	function(cb) { ... },
+	function(cb) { ... }
 ]);
 ```
 
@@ -311,58 +325,60 @@ async.series([
 </td>
 
 </tr>
-
+</tbody>
 </table>
 
 
 ---
 layout: center
-class: code-fit
+class: code-fit code-flow
 ---
 
 # И если присмотреться внимательней ...
-то можно было увидеть как оно выполняется
+то можно было увидеть, как оно выполняется:
 <table>
+<tbody>
 <tr>
 <td>
 
-```ts
-step1((cb) => {							↓
-	step2((cb) => {						↓
-		step3((cb) => {					↓
-			step4((cb) => {				↓
-				step5((cb) => { 		↓
+
+```ts {none|1|1-2|1-3|1-4|1-5|1-6|1-7|1-8|1-9|1-10|1-11|1-12}
+step1((cb) => {							    ↓
+	step2((cb) => {						    ↓
+		step3((cb) => {					    ↓
+			step4((cb) => {				    ↓
+				step5((cb) => { 		    ↓
 					// какая-то ещё работа
-					cb(result);
-				});
-			});
-		});
-	});
-});
+					cb(result);          
+				});                     ↑
+			});                       ↑
+		});                         ↑
+	});                           ↑
+});                             ↑
 ```
 
 </td>
 <td>
 
-```ts
-async.parallel([                ↓
-    function(callback) { ... }, →
-    function(callback) { ... }, →
-], function(err, results) {     ↓
-    // optional callback
-});
+```ts {none|1|1-2|1-3|1-4|1-6|1-6,8|1-6,8-9|1-6,8-10|1-6,8-11|1-6,8-12}{'at':13}
+async.parallel([            ↓
+    function(cb) { ... }   ->
+    function(cb) { ... },  ->
+], function(err, results) { 
+    // optional
+});                         
 
 async.series([
-	function(callback) { ... },  ↓
-	function(callback) { ... },  ↓
-	function(callback) { ... },  ↓
+	function(cb) { ... },     ↓
+	function(cb) { ... },     ↓
+	function(cb) { ... },     ↓
 ]);
 ```
 
 </td>
 
 </tr>
-
+</tbody>
 </table>
 
 ---
@@ -372,7 +388,7 @@ class: code-fit
 
 # И можно ли обернуть этот flow ?
 
-этот самый Execution Flow, трасу пути выполнения
+этот самый Execution Flow, trace пути выполнения
 
 ```ts
 const wrap = function ( cb, ...data ) {
@@ -380,7 +396,7 @@ const wrap = function ( cb, ...data ) {
 	// если typeof data [ i ] === 'function'
 	// то wrap'ает такие элементы
 
-	const result = cb.call(this, ...data );
+	const result = cb.call( this, ...data );
 	// проверяет typeof result и тоже  wrap'ает
 	// если видит, что это function
 	return result;
@@ -399,20 +415,20 @@ class: code-fit
 # Обёртка в реальном коде выглядит как-то так
 
 ```ts
-const wrap = function (cb, ...data) {
+const wrap = function ( cb, ...data ) {
 	// декорирует cb вглубь data
 };
 
-const fn = (x: number) => x * 2;                     ← сама работа
+const fn = ( x: number ) => x * 2;                     ← сама работа
 
 const requestInstance = {};
 const serviceInstance = {};
 
 // обёртка привязана к истории requestInstance
-const w1 = wrap(fn, requestInstance);                  контекст 1
+const w1 = wrap( fn, requestInstance );                  контекст 1
 
 // ПРОБЛЕМА: попытка обернуть с ДРУГИМ контекстом !
-const w2 = wrap(w1, serviceInstance);                  контекст 2
+const w2 = wrap( w1, serviceInstance );                  контекст 2
 ```
 
 
@@ -427,14 +443,14 @@ class: code-fit
 var saved;
 const doWork = function () {   /* какая-то работа */   };
 
-const onRequest = wrap((cb) => {
+const onRequest = wrap(( cb ) => {
 	saved = cb;
 }, requestInstance);                           ← контекст requestInstance
 
-onRequest(() => doWork());
+onRequest( () => doWork () );
 // запрос A закончился но cb ~ saved "выжил" и продолжит
 // теперь "протекать" сквозь код в других местах выполнения
-const runJob = wrap((job) => job(), serviceInstance);
+const runJob = wrap(( job ) => job (), serviceInstance);
 
 runJob( saved );                               ← продолжает прилипать к коду !!!
 ```
@@ -467,21 +483,74 @@ backgroundSize: 55%
 
 ---
 layout: image
-image: /img/context-dive.png
-backgroundSize: 55%
----
-
-# Но решение я всё-таки запилил
-
-
----
-layout: image
 image: /img/async_zero.png
 backgroundSize: 55%
 ---
 
-# Asynchronous Zero — HolyJS 2018
+# Asynchronous Zero &ndash; HolyJS 2018
 
+
+---
+layout: center
+class: code-xl
+---
+
+# Отложенный вызов от запроса
+
+```ts
+const { data } = req;
+
+res.send('some response');
+
+setTimeout(() => {
+	data.ref.error; // это данные запроса
+	// но самого запроса уже нет в ALS
+}, 0);
+```
+
+---
+layout: image
+image: /img/als.png
+backgroundSize: 55%
+---
+
+# в 2018 ALS не было
+
+---
+layout: image
+image: /img/async_hooks.png
+backgroundSize: 55%
+---
+
+# были только async_hooks
+
+
+---
+layout: image
+image: /img/Andrey.png
+backgroundSize: 55%
+---
+
+# И в 2019 был ещё Андрей 
+
+
+---
+layout: image
+image: /img/context-dive.png
+backgroundSize: 55%
+---
+
+# и решение я всё-таки запилил
+
+
+
+---
+layout: image
+image: /img/issue249_fin.png
+backgroundSize: 55%
+---
+
+# А issue закрыл как нерелевантное
 
 ---
 layout: image
@@ -517,6 +586,7 @@ class: code-fit
 # Контекст &mdash; это данные
 
 <table>
+<tbody>
 <tr valign = "top">
 <td width = "58%">
 
@@ -548,6 +618,7 @@ class: code-fit
 
 </td>
 </tr>
+</tbody>
 </table>
 
 
@@ -587,7 +658,7 @@ layout: center
 <br />
 
 ```ts
-Object.getPrototypeOf(
+Object.setPrototypeOf(
 	
 	Successor_Instance,  // новая модель
 	
@@ -636,20 +707,29 @@ backgroundSize: 55%
 
 # И есть объяснимое поведение
 
+---
+layout: image
+image: /img/vitya.png
+backgroundSize: 55%
+---
+
+# Но, оставалась куча вопросов ...
+
 
 ---
 layout: center
 ---
 
-# Но как на этом сделать : DAG ?
+# Как на этом сделать : DAG ?
 
 <table style = "margin-top: -5%">
+<tbody>
 <tr>
 <td width = "67%" >
 
 <v-clicks>
 
-- т.к. `setPrototypeOf` — не подходит
+- т.к. `setPrototypeOf` &ndash; не подходит
 - и ещё нужны `(...args)` конструкторов
 - и `instanceOf` &laquo;такое себе&raquo; identity ...
 
@@ -675,6 +755,7 @@ layout: center
 </td>
 
 </tr>
+</tbody>
 </table>
 
 
@@ -755,7 +836,7 @@ class Admin { /.../ }
 layout: default
 ---
 
-# в Runtime это — дерево
+# в Runtime это &ndash; дерево
 
 ```ts
 const user  = new User({ name: 'Ada' });
@@ -831,7 +912,7 @@ layout: center
 <v-clicks>
 
 - TypeScript типы &laquo;живут&raquo; до компиляции
-- граф экземпляров Mnemonica — &laquo;после&raquo;
+- граф экземпляров Mnemonica &ndash; &laquo;после&raquo;
 - и есть ещё TypeScript декораторы ...
 - для IntelliSense всё это нужно как-то &laquo;подружить&raquo;
 - и вообще есть ещё та самая &laquo;строгая типизация&raquo;
@@ -845,7 +926,7 @@ image: /img/TypesInPrototypes.png
 backgroundSize: 55%
 ---
 
-# про это был отдельный доклад
+# Про это был отдельный доклад
 
 
 ---
@@ -853,7 +934,7 @@ layout: center
 class: code-xl
 ---
 
-# с паттерном Identity
+# С паттерном Identity
 
 
 ```ts
@@ -871,7 +952,7 @@ export type ConstructorDefinition <T>
 layout: center
 ---
 
-# как-то так это выглядело
+# Как-то так это выглядело
 
 ```ts
 type Proto<P, T> =
@@ -889,7 +970,7 @@ const define = function <P extends object, T>(
 };
 ```
 
-
+table
 
 ---
 layout: center
@@ -993,7 +1074,7 @@ layout: center
 
 <v-clicks>
 
-- NestJS — крепость: его не переделать
+- NestJS &ndash; крепость: его не переделать
 - поэтому инструментируем снаружи, адаптером
 - DTO-шки: ошибки доклада «Real DTO» учтены
 
@@ -1041,7 +1122,7 @@ layout: center
 
 - не только отладка: проектирование
 - граф типов читается человеком и машиной
-- `.tactica` — инструкция для AI-агентов из коробки
+- `.tactica` &ndash; инструкция для AI-агентов из коробки
 
 </v-clicks>
 
@@ -1054,7 +1135,7 @@ layout: center
 
 <v-clicks>
 
-- корректность — новая валюта
+- корректность &ndash; новая валюта
 - реестр типов = машиночитаемое намерение
 - агент знает, ЧТО он построил
 
@@ -1096,14 +1177,14 @@ layout: image
 image: /img/mythographica.png
 ---
 
-# https : // <b> mythographica </b> .github.io
+# <a href="https://mythographica.github.io">https://<span style="color: orange">mythographica</span>.github.io</a>
 
 
 ---
 layout: center
 ---
 
-# &laquo; Стоя на плечах Гигантов &raquo;
+## &nbsp; Доклад стоял &laquo;на плечах гигантов&raquo;
 
 <div class="flex gap-6 items-start justify-center mt-6">
   <figure class="text-center">
@@ -1113,6 +1194,31 @@ layout: center
   <figure class="text-center">
     <img src="/img/Vsevolod.png" class="h-44 rounded" />
     <figcaption class="mt-2 text-sm opacity-80">Всеволод Родионов<br/>Proxy в конце цепочки</figcaption>
+  </figure>
+</div>
+
+---
+layout: center
+---
+
+<center>
+
+# И продолжает стоять ;^)
+
+</center>
+
+<div class="flex gap-6 items-start justify-center mt-6">
+  <figure class="text-center">
+    <img src="/img/vasya.jpg" class="h-44 rounded" />
+	<figcaption class="mt-2 text-sm opacity-80">Василий Корянов</figcaption>
+  </figure>
+  <figure class="text-center">
+	<img src="/img/pasha.png" class="h-44 rounded" />
+	<figcaption class="mt-2 text-sm opacity-80">Павел Востриков</figcaption>
+  </figure>
+  <figure class="text-center">
+	<img src="/img/vitya.jpg" class="h-44 rounded" />
+	<figcaption class="mt-2 text-sm opacity-80">Виктор Хомяков</figcaption>
   </figure>
 </div>
 
@@ -1134,106 +1240,6 @@ layout: center
 
 ### 10 минут
 
----
-layout: center
----
-
-# FIN
-
-
-
----
-layout: center
-hide: true
----
-
-# Итоги
-
-<v-clicks>
-
-- никаких скрытых фоновых инструментов
-- ничего странного в пакетах
-- maintainability в runtime
-- ответы заранее: AoT/AST
-- простая цепочка обработки ошибок
-
-</v-clicks>
-
-
----
-hide: true
-layout: center
----
-
-# Три формы одной ошибки
-
-<v-clicks>
-
-- отложенный вызов
-- очередь сообщений
-- обычный ReferenceError
-- ... и их комбинации
-
-</v-clicks>
-
----
-hide: true
-layout: center
----
-
-# Отложенный вызов
-
-```ts
-const data = 'data';
-res.send('data');
-setTimeout(() => {
-    // some error here
-}, 0);
-```
-
-<v-click>
-
-Запрос уже завершён. Ошибка случится потом. Кто её поймает?
-
-</v-click>
-
----
-hide: true
-layout: center
----
-
-# Очередь сообщений
-
-```ts
-const data = req.data;
-// no try-catch block
-await queue.send('data');
-```
-
-<v-click>
-
-Между `await` и падением — чужой event loop.
-
-</v-click>
-
----
-hide: true
-layout: center
----
-
-# Обычный ReferenceError
-
-```ts
-const data = req.data;
-// no try-catch block
-const parsed = data.a.b.c
-```
-
-<v-click>
-
-Самая частая ошибка в проде. И самая необъяснимая.
-
-</v-click>
 
 
 --- 

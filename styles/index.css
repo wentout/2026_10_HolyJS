@@ -19,6 +19,37 @@ html.dark {
 	--slidev-code-line-height: 20px;
 }
 
+/* Links: always show the hover look (primary color, solid underline)
+ * instead of dashed-and-current-color until hovered.
+ */
+.slidev-layout a[href] {
+	color: var(--slidev-theme-primary);
+	border-bottom-style: solid;
+}
+
+/* Execution-flow arrows (↓ →) inside code blocks, wrapped by the
+ * flow-arrows shiki transformer: red + glow so the flow reads across
+ * the room.
+ */
+.flow-arrow {
+	color: #f44 !important; /* beats shiki's inline span colors */
+	font-weight: 700;
+	text-shadow: 0 0 8px rgba(255, 68, 68, 0.55);
+}
+
+/* `class: code-flow` slides reveal code lines one per click via
+ * accumulating {none|1|1-2|...} ranges; stock behavior only dims
+ * unrevealed lines (opacity .3) — hide them fully instead. Lines keep
+ * their space, so the block doesn't jump while revealing.
+ */
+.code-flow .slidev-code code span {
+	transition: opacity 0.25s;
+}
+
+.code-flow .slidev-code .slidev-code-dishonored {
+	opacity: 0;
+}
+
 /* Short snippets (up to ~9 rows) can afford a bigger font:
  * add `class: code-lg` to the slide frontmatter.
  */
@@ -74,6 +105,22 @@ html.dark {
 .slidev-layout:not(.cover):not(.section):not(.end) > .my-auto {
 	margin-top: 0;
 	margin-bottom: 0;
+}
+
+/* Light-background diagram slides (white chart boxes clashing with the
+ * dark deck): add `class: invert-diagram` to the slide frontmatter.
+ * invert(1) + hue-rotate(180deg) flips only lightness — white becomes
+ * black while slice/line hues stay recognizable. The layout's children
+ * (the title) get the same filter a second time, which is an exact
+ * no-op, so the text keeps its original colors while the background
+ * image (on the layout root itself) stays inverted.
+ */
+.invert-diagram {
+	filter: invert(1) hue-rotate(180deg);
+}
+
+.invert-diagram > * {
+	filter: invert(1) hue-rotate(180deg);
 }
 
 /* Inline icons (carbon-*) inside slide titles render noticeably larger
