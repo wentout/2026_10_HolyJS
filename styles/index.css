@@ -37,6 +37,16 @@ html.dark {
 	text-shadow: 0 0 8px rgba(255, 68, 68, 0.55);
 }
 
+/* A single token highlighted inside a code line, marked with ⟪…⟫ in
+ * the fence and wrapped by the hl-token shiki transformer. Plain orange
+ * text — no weight, no glow.
+ */
+.hl-token {
+	font-weight: 550;
+	text-shadow: 0 0 8px rgba(255, 166, 87, 0.25);
+	color: yellow !important; /* beats shiki's inline span colors */
+}
+
 /* `class: code-flow` slides reveal code lines one per click via
  * accumulating {none|1|1-2|...} ranges; stock behavior only dims
  * unrevealed lines (opacity .3) — hide them fully instead. Lines keep
@@ -82,6 +92,47 @@ html.dark {
 	font-size: 1.55rem;
 	line-height: 1.2;
 	margin-bottom: 0.5rem;
+}
+
+/* Dense comparison tables (7-8 rows): the same short title, and cells
+ * small enough that the whole table fits the 700px canvas. The size
+ * goes on the cells — the default theme sizes td/th itself, so a
+ * font-size on <table> alone never reaches them.
+ */
+.table-fit h1 {
+	font-size: 1.55rem;
+	line-height: 1.2;
+	margin-bottom: 0.5rem;
+}
+
+.table-fit table {
+	width: 100%;
+	table-layout: fixed;
+}
+
+.table-fit th,
+.table-fit td {
+	font-size: 0.6rem;
+	line-height: 1.25;
+	padding: 0.2rem 0.4rem;
+	text-align: left;
+	vertical-align: middle;
+}
+
+/* Tables whose columns are values (not prose): add `table-center` next
+ * to `table-fit` to centre every column except the row labels.
+ */
+.table-center th:not(:first-child),
+.table-center td:not(:first-child) {
+	text-align: center;
+}
+
+/* A footnote under the table (a term the table uses) — cell-sized, dimmed */
+.table-fit p {
+	font-size: 0.6rem;
+	line-height: 1.3;
+	margin-top: 0.75rem;
+	opacity: 0.8;
 }
 
 /* Slides whose image is the centred background (`layout: image`, the

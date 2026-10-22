@@ -2,6 +2,8 @@
 theme: default
 title: Elegant Observability &ndash; unchained for JavaScript and Node.js
 colorSchema: dark
+fonts:
+  weights: '200,400,600,700'
 canvasWidth: 700
 duration: 40min
 timer: countdown
@@ -9,7 +11,7 @@ transition: fade-out
 layout: cover
 ---
 
-# Elegant Observability
+# Elegant <br />Observability
 
 ### unchained for JavaScript and Node.js
 
@@ -25,11 +27,11 @@ layout: default
 
 <v-clicks>
 
-- застал времена первой спецификации
-- то есть занимаюсь JS четверть века
 - родился и живу в Ростове-на-Дону
-- до 30 занимался IT-экономикой
-- потом как-то &laquo;залип&raquo; в код и  ...
+- до 30 лет занимался IT-экономикой
+- но в 1999 уже сделал первый сайт 
+- тогда это был ECMA Script 1997
+- после 30 окончательно &laquo;залип&raquo; в код
 - и вот программирую уже 15 лет
 - пришёл рассказать про последние 10
 
@@ -41,6 +43,14 @@ layout: default
 </div>
 </div>
 
+
+---
+layout: cover
+---
+
+# Elegant <br />Observability
+
+### unchained for JavaScript and Node.js
 
 ---
 layout: image
@@ -73,7 +83,7 @@ layout: center
 layout: section
 ---
 
-# начало драмы
+# Начало &laquo;Драмы&raquo;
 
 ## Глава 1: 2016 →
 
@@ -150,7 +160,7 @@ layout: center
 
 # Итого: обычный вторник
 
-<v-clicks>
+<v-clicks style="margin-top: -3vh">
 
 - <carbon-checkmark-filled class="text-green-400 inline" /> одни запросы проходят happy path
 - <carbon-error-filled class="text-red-400 inline" /> другие впадают в Uncaught Exception
@@ -158,13 +168,11 @@ layout: center
 
 </v-clicks>
 
-<center>
 <v-click>
 
-![tuesday](./img/oscar.gif)
+<img src="./img/pepe-silvija-i-tjulen-1.jpg" width="87%" style="margin-top: 1vh" />
 
 </v-click>
-</center>
 
 ---
 layout: center
@@ -191,11 +199,11 @@ class: code-xl
 # <carbon-error-filled class="text-red-400 inline" /> Uncaught Exception
 
 ```js
-// забыли валидацию, влетел null
+// забыли валидацию, влетел undefined
 
-new Sum (null);
+new Sum (undefined);
 
-// TypeError: null is not iterable
+// TypeError: undefined is not iterable
 ```
 
 <v-clicks>
@@ -208,17 +216,17 @@ new Sum (null);
 
 ---
 layout: center
-class: code-xl
+class: code-xl code-flow
 ---
 
-# <carbon-view-off-filled class="text-yellow-400 inline" /> и есть неверный расчёт
+# <carbon-view-off-filled class="text-yellow-400 inline" /> И неверный расчёт
 
-```js
+```js {none|1-3|1-5}
 // самый типичный пример
-// твой родной язык JavaScript что-ли?
+// твой родной язык JavaScript ?
 const sum = new Sum([ '1', 1 ]);
-// и так вот дальше потеряли "почему"
-JSON.parse(JSON.stringify(sum));
+// и вот так теряем "почему"
+JSON.parse(JSON.stringify(sum)); // 11
 ```
 
 <v-clicks>
@@ -234,9 +242,9 @@ JSON.parse(JSON.stringify(sum));
 layout: center
 ---
 
-## проблемы одинаковые
+## Проблемы Одинаковые
 
-<v-clicks>
+<v-clicks style="margin-top: 1vh">
 
 - мы не знаем, какие данные были
 - мы теряем контекст момента ошибки
@@ -245,7 +253,7 @@ layout: center
 </v-clicks>
 <v-click>
 
-## бизнес теряет деньги
+## Бизнес Теряет Деньги
 
 </v-click>
 <v-clicks>
@@ -261,18 +269,10 @@ layout: center
 layout: section
 ---
 
-# error контекст
+# контекст ошибки
 
 ## Глава 2: → 2018 →
 
-
----
-layout: image
-image: /img/js-everywhere.jpg
-backgroundSize: 42%
----
-
-# Чёрная кошка в тёмной комнате
 
 ---
 layout: center
@@ -383,7 +383,7 @@ async.series([
 
 ---
 layout: center
-class: code-fit
+class: code-fit 
 ---
 
 # И можно ли обернуть этот flow ?
@@ -409,12 +409,12 @@ const wrap = function ( cb, ...data ) {
 
 ---
 layout: center
-class: code-fit
+class: code-fit code-flow
 ---
 
-# Обёртка в реальном коде выглядит как-то так
+# Обёртка в реальности выглядит как-то так
 
-```ts
+```ts {none|1-3|1-5|1-9|1-12|1-14}
 const wrap = function ( cb, ...data ) {
 	// декорирует cb вглубь data
 };
@@ -434,12 +434,12 @@ const w2 = wrap( w1, serviceInstance );                  контекст 2
 
 ---
 layout: center
-class: code-fit
+class: code-fit code-flow
 ---
 
-# Но! Есть Проблема ... Потому, что Это НЕ ответ
+# И если ещё реальней ... 
 
-```ts
+```ts {none|1-3|1-7|1-8|1-10|1-14}
 var saved;
 const doWork = function () {   /* какая-то работа */   };
 
@@ -448,7 +448,8 @@ const onRequest = wrap(( cb ) => {
 }, requestInstance);                           ← контекст requestInstance
 
 onRequest( () => doWork () );
-// запрос A закончился но cb ~ saved "выжил" и продолжит
+
+// запрос A закончился но cb ~ saved "выжил" и продолжит ...
 // теперь "протекать" сквозь код в других местах выполнения
 const runJob = wrap(( job ) => job (), serviceInstance);
 
@@ -482,20 +483,103 @@ backgroundSize: 55%
 
 
 ---
+layout: center
+class: code-xl code-flow
+---
+
+# Пример падающей обработки
+
+```ts {none|1|1-7|1-10}
+// где-то в коде обработки запроса
+const { data } = req;
+
+process.on('uncaughtException', (error) => {
+	// тут хочу получить data или req
+	// но есть только error.stack
+});
+
+setTimeout(() => { data.ref.error; }, 0);
+
+```
+
+---
+layout: image
+image: /img/async_hooks.png
+backgroundSize: 55%
+---
+
+# В 2018 появились async_hooks
+
+---
+layout: image
+image: /img/context-dive.png
+backgroundSize: 55%
+---
+
+# В общем &laquo;запилил&raquo; решение
+
+---
 layout: image
 image: /img/async_zero.png
 backgroundSize: 55%
 ---
 
-# Asynchronous Zero &ndash; HolyJS 2018
+# И рассказал на HolyJS 2018
 
+
+---
+layout: image
+image: /img/Andrey.png
+backgroundSize: 55%
+---
+
+# А в 2019 появился Андрей 
+
+
+---
+layout: image
+image: /img/als.png
+backgroundSize: 55%
+---
+
+# И где-то в 2019 доделал ALS
+
+
+---
+layout: image
+image: /img/issue249_fin.png
+backgroundSize: 55%
+---
+
+# Issue закрыл как нерелевантное
+
+---
+layout: center
+class: code-flow
+---
+
+# потому, что с ~2020 можно так
+
+```js {none|1-3|1-7|1-11}
+const { AsyncLocalStorage } = require('node:async_hooks');
+const als = new AsyncLocalStorage();
+
+process.on('uncaughtException', (error) => {
+	// нормально обрабатываем res
+	const { req, res } = als.getStore();
+});
+
+// где-то в коде
+als.run({ req, res });
+
+```
 
 ---
 layout: center
 class: code-xl
 ---
 
-# Отложенный вызов от запроса
+# Но такое всё равно не работало
 
 ```ts
 const { data } = req;
@@ -508,49 +592,6 @@ setTimeout(() => {
 }, 0);
 ```
 
----
-layout: image
-image: /img/als.png
-backgroundSize: 55%
----
-
-# в 2018 ALS не было
-
----
-layout: image
-image: /img/async_hooks.png
-backgroundSize: 55%
----
-
-# были только async_hooks
-
-
----
-layout: image
-image: /img/Andrey.png
-backgroundSize: 55%
----
-
-# И в 2019 был ещё Андрей 
-
-
----
-layout: image
-image: /img/context-dive.png
-backgroundSize: 55%
----
-
-# и решение я всё-таки запилил
-
-
-
----
-layout: image
-image: /img/issue249_fin.png
-backgroundSize: 55%
----
-
-# А issue закрыл как нерелевантное
 
 ---
 layout: image
@@ -558,14 +599,14 @@ image: /img/dip.png
 backgroundSize: 45%
 ---
 
-# В итоге я пошёл своим путём
+# Поэтому я пошёл своим путём
 
 
 ---
 layout: section
 ---
 
-# учимся считать
+# Учимся Считать
 
 ## Глава 3: → 2019 →
 
@@ -759,29 +800,61 @@ layout: center
 </table>
 
 
-
-
 ---
 layout: center
-class: code-xl
+class: code-xl code-flow
+transition: none
 ---
 
 # И как показать идею кодом ...
 
-<v-clicks>
-
-```ts
+```ts {none|1-2|1-5}
 // первое поколение
 const user = new User({ name: 'Ada' });
 // второе поколение
 const admin = new user.Admin({ role: 'root' });
 
-Object.getPrototypeOf( admin ) // → user
 ```
 
- &laquo; память &raquo; истории объекта теперь лежит в Prototype Chain.
+---
+layout: center
+class: code-xl code-flow
+transition: none
+---
 
-</v-clicks>
+# ... и ещё раз ... наглядно ...
+
+```ts {1-2|1-5}
+// первое поколение
+const ⟪user⟫ = new User({ name: 'Ada' });
+// второе поколение
+const admin = new ⟪user⟫.Admin({ role: 'root' });
+
+```
+
+
+---
+layout: center
+class: code-xl code-flow
+transition: none
+---
+
+# В общем вот как-то так это ...
+
+```ts
+// первое поколение
+const ⟪user⟫ = new User({ name: 'Ada' });
+// второе поколение
+const ⟪admin⟫ = new ⟪user⟫.Admin({ role: 'root' });
+
+Object.getPrototypeOf( ⟪admin⟫ ); // ⟪user⟫
+```
+
+<v-click>
+
+ А &laquo; память &raquo; истории объекта будет в Prototype Chain.
+
+</v-click>
 
 
 ---
@@ -795,39 +868,40 @@ backgroundSize: 55%
 
 ---
 layout: default
-class: code-lg
+class: code-lg code-flow
 ---
 
 # mnemonica: define()
 
-```ts
+```ts {none|1|1-2|1-6|1-10}
 import { define } from 'mnemonica';
 
-const User = define('User', function (data) {
+const ⟪User⟫ = define('User', function (data) {
 	this.name = data.name;
 });
 
-const Admin = User.define('Admin', function (data) {
+const Admin = ⟪User⟫.define('Admin', function (data) {
 	this.name = data.name;
 });
+
 ```
 
 ---
 layout: default
-class: code-lg
+class: code-lg code-flow
 ---
 
 # mnemonica: @decorate()
 
-```ts
+```ts {none|1|1-2|1-6|1-10}
 import { decorate } from 'mnemonica';
 
 // root object
 @decorate ()
-class User { /.../ };
+class ⟪User⟫ { /.../ };
 
-// predecessor ↓
-@decorate ( User )
+// predecessor
+@decorate ( ⟪User⟫ )
 class Admin { /.../ }
 
 ```
@@ -1007,8 +1081,8 @@ class: code-xl
 ## Поэтому Declaration Merging : Registry
 
 ```ts
-// читаем исходники и генерирует реестр
-// код merge'им через tsconfig.json
+// по исходникам и генерируется реестр
+// далее merge'ится через tsconfig.json
 interface TypeRegistry {
 
 	Root: IDefinitorInstance<'Root', /* … */>
@@ -1065,20 +1139,119 @@ layout: center
 
 </v-clicks>
 
+---
+layout: center
+class: table-fit
+---
+
+# попробовал применять : fine cut
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th>express / fastify / nest</th>
+<th>они же</th>
+<th>nest</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OTel wiring</td>
+<td>Node SDK + auto-instrumentations</td>
+<td>@mnemonica/otel</td>
+<td>@mnemonica/nestjs</td>
+</tr>
+<tr>
+<td>HTTP span на запрос</td>
+<td><carbon-checkmark-filled class="text-green-400 inline" /></td>
+<td><carbon-checkmark-filled class="text-green-400 inline" /></td>
+<td><carbon-checkmark-filled class="text-green-400 inline" /></td>
+</tr>
+<tr>
+<td>Construction spans</td>
+<td><carbon-error-filled class="text-red-400 inline" /></td>
+<td><carbon-checkmark-filled class="text-green-400 inline" /></td>
+<td><carbon-checkmark-filled class="text-green-400 inline" /></td>
+</tr>
+<tr>
+<td>Service-call spans</td>
+<td><carbon-error-filled class="text-red-400 inline" /></td>
+<td><carbon-checkmark-filled class="text-green-400 inline" /></td>
+<td><carbon-checkmark-filled class="text-green-400 inline" /></td>
+</tr>
+<tr>
+<td>пойманная ошибка запроса</td>
+<td>enriched 500</td>
+<td>+ unblinder *</td>
+<td>+ unblinder *</td>
+</tr>
+<tr>
+<td>Uncaught Exception / Unhandled Rejection</td>
+<td>
+<span style="color: red">
+только stack, <br />ручной boilerplate
+</span>
+</td>
+<td>
+<span style="color: orange">
+branch + экземпляр <br />+ его аргументы
+</span>
+</td>
+<td>
+<span class="text-green-400 font-bold">
+то же самое, + <br /> трасса до ошибки
+</span>
+</td>
+</tr>
+<tr>
+<td>очередь, &laquo;30 секунд спустя&raquo;</td>
+<td><carbon-error-filled class="text-red-400 inline" /></td>
+<td><carbon-checkmark-filled class="text-green-400 inline" /></td>
+<td><carbon-checkmark-filled class="text-green-400 inline" /></td>
+</tr>
+<tr>
+<td>какие <b>данные</b> упали</td>
+<td>не связать</td>
+<td>доступны</td>
+<td>доступны и полны</td>
+</tr>
+</tbody>
+</table>
+
+<p style="padding-left: 1vw">* <b>Unblinder</b> &mdash; обработчик ошибок из @mnemonica/otel: по объекту ошибки восстанавливает экземпляр,
+<br /> &nbsp; его construction аргументы и execution flow и пишет их в Jaeger span</p>
+
 
 ---
 layout: center
+class: code-flow
 ---
 
 # @mnemonica/nestjs
 
-<v-clicks>
+<v-clicks style="margin-top:-2vh">
 
 - NestJS &ndash; крепость: его не переделать
 - поэтому инструментируем снаружи, адаптером
-- DTO-шки: ошибки доклада «Real DTO» учтены
 
 </v-clicks>
+
+<v-click>
+
+```ts {none|1|1-3|1-5|1-6|1-9}
+export class MvpController {
+	createWidget (
+		@Body (
+			// mvp импортируется из @mnemonica/nestjs
+			mvp.forType(MvpWidgetType, CreateWidgetDto)
+			// mvp : mnemonica validation pipe
+		) widget: MvpWidget,
+		@Req() req: Request,
+	): object { // ...
+```
+
+</v-click>
 
 ---
 layout: statement
@@ -1087,6 +1260,13 @@ layout: statement
 # <br /> DEMO 2
 
 ## Nest.JS: живые трассы
+
+---
+layout: center
+title: tactica-nestjs
+---
+
+<GraphOverlay src="/tactica-nestjs-graph.html" title="Electron Graph" />
 
 
 ---
@@ -1112,35 +1292,6 @@ layout: section
 
 # что это меняет
 
----
-layout: center
----
-
-# <br /> &laquo; высота птичьего полёта &raquo;
-
-<v-clicks>
-
-- не только отладка: проектирование
-- граф типов читается человеком и машиной
-- `.tactica` &ndash; инструкция для AI-агентов из коробки
-
-</v-clicks>
-
-
----
-layout: center
----
-
-# <br /> AI пишет код быстрее,<br/> чем мы проверяем
-
-<v-clicks>
-
-- корректность &ndash; новая валюта
-- реестр типов = машиночитаемое намерение
-- агент знает, ЧТО он построил
-
-</v-clicks>
-
 
 ---
 layout: statement
@@ -1155,9 +1306,13 @@ layout: statement
 layout: center
 ---
 
+<GraphOverlay src="/real-work-graph.html" title="Real Work Graph" />
+
+---
+layout: center
+---
 
 # <br /> <br /> AI доволен
-
 
 <v-click>
 
@@ -1165,19 +1320,116 @@ layout: center
 
 </v-click>
 
-
 ---
 layout: center
 ---
 
-<GraphOverlay src="/real-work-graph.html" title="Real Work Graph" />
+# <br /> AI пишет код быстрее,<br/> чем мы проверяем
+
+<v-clicks>
+
+- корректность &ndash; это новая &laquo;валюта&raquo;
+- 3D визуализация упрощает понимание
+- `.tactica` &ndash; инструкция для AI &laquo;из коробки&raquo;
+- реестр типов == машиночитаемое намерение
+- итого: совместная человеко-машинная разработка
+
+
+</v-clicks>
+
+---
+layout: center
+class: table-fit table-center
+---
+
+<center>
+
+# Идея на других языках
+
+</center>
+
+<br />
+
+<table style="width: 90%">
+<thead>
+<tr>
+<th></th>
+<th>JVM, Kotlin, reactive Java</th>
+<th>Python<br />data / ML</th>
+<th>JS / Node</th>
+<th>Go</th>
+<th>.NET</th>
+<th>Rust</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>неверные данные</td>
+<td class="text-red-400">высокая</td>
+<td class="text-red-400 font-bold">очень высокая</td>
+<td class="text-red-400">высокая</td>
+<td class="text-yellow-400">средняя<br />zero values</td>
+<td class="text-yellow-400">средняя</td>
+<td class="text-green-400">низкая</td>
+</tr>
+<tr>
+<td>потерян async-контекст</td>
+<td class="text-red-400 font-bold">очень высокая<br />reactive, MDC</td>
+<td class="text-yellow-400">средняя</td>
+<td class="text-red-400">высокая</td>
+<td class="text-yellow-400">средняя<br />явный <br /><code>ctx</code></td>
+<td class="text-green-400">низкая <br />через<br /><code>AsyncLocal</code></td>
+<td class="text-green-400">низкая</td>
+</tr>
+<tr>
+<td>lineage в домене</td>
+<td class="text-red-400 font-bold">очень высокая<br />банки, аудит</td>
+<td class="text-red-400">высокая</td>
+<td class="text-yellow-400">средняя</td>
+<td class="text-yellow-400">средняя</td>
+<td class="text-red-400">высокая</td>
+<td class="text-green-400">ниша<br />аудит</td>
+</tr>
+<tr>
+<td>механизм</td>
+<td>Kotlin, KSP, <br /><span class="whitespace-nowrap"><code>by</code> delegation</span></td>
+<td><code>__getattr__</code></td>
+<td><b>native</b></td>
+<td>embedding</td>
+<td>delegation вручную</td>
+<td><code>Deref</code>, macros</td>
+</tr>
+</tbody>
+</table>
+
 
 ---
 layout: image
-image: /img/mythographica.png
+image: /img/mnemonica-py.png
+backgroundSize: 75%
 ---
 
+---
+layout: image
+image: /img/mnemonica-go.png
+backgroundSize: 75%
+---
+
+
+---
+layout: default
+---
+
+<center>
+
 # <a href="https://mythographica.github.io">https://<span style="color: orange">mythographica</span>.github.io</a>
+
+</center>
+
+<div class="grid grid-cols-[7fr_4fr] gap-7 mt-11 items-center">
+<img src="/img/mythographica.png" class="w-full rounded-lg shadow-lg" />
+<img src="/img/qrcode_mythographica.github.io.png" class="w-full rounded-lg shadow-lg" />
+</div>
 
 
 ---
@@ -1226,19 +1478,26 @@ layout: center
 
 
 ---
-layout: end
----
-
-# <br /> <br /> Спасибо!
-
-
----
 layout: center
+---
+
+<center>
+
+#  Спасибо!
+
+<br />
+
+
+<img src="/img/qrcode_github.com.png" width="55%" />
+
+</center>
+
+---
+layout: end
 ---
 
 # <br /> <br /> Q & A
 
-### 10 минут
 
 
 
