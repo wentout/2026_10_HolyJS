@@ -30,7 +30,7 @@ layout: default
 - родился и живу в Ростове-на-Дону
 - до 30 лет занимался IT-экономикой
 - но в 1999 уже сделал первый сайт 
-- тогда это был ECMA Script 1997
+- тогда это был ECMAScript 1997
 - после 30 окончательно &laquo;залип&raquo; в код
 - и вот программирую уже 15 лет
 - пришёл рассказать про последние 10
@@ -48,7 +48,7 @@ layout: default
 layout: default
 ---
 
-# И это моё Десятое HolyJS 
+# И это моё десятое HolyJS 
 
 <div class="grid grid-cols-[5fr_4fr] gap-1 items-center" style="margin-top: -2vh">
 <div class="text-lg leading-relaxed pl-4 [&_li]:whitespace-nowrap">
@@ -99,10 +99,10 @@ layout: center
 
 - 2016: впервые столкнулся с нехваткой Observability
 - 2018: время, когда я пробовал &laquo;наивные&raquo; решения
-- 2019: понял &laquo; с какой стороны &raquo; делать Observable
+- 2019: понял &laquo;с какой стороны&raquo; делать Observable
 - 2021 → 2023: делал Runtime и бодался с TypeScript
 - 2024 → 2026: рассказывал о различных находках
-- 2026: появился AI и подход заработал &laquo;наглядно&raquo;
+- 2026: появился AI, и подход заработал &laquo;наглядно&raquo;
 - Выводы: что это значит и как попробовать
 
 </v-clicks>
@@ -244,7 +244,7 @@ class: code-xl code-flow
 
 ```js {none|1-3|1-5}
 // самый типичный пример
-// твой родной язык JavaScript ?
+// твой родной язык JavaScript?
 const sum = new Sum([ '1', 1 ]); // 11
 // и вот так теряем "почему"
 JSON.parse(JSON.stringify(sum)); 
@@ -252,7 +252,7 @@ JSON.parse(JSON.stringify(sum));
 
 <v-clicks>
 
-- так как &ndash; это **happy path**
+- так как это **happy path**
 - поэтому ни исключения, ни лога
 - и почему оно так было тоже ...
 
@@ -290,7 +290,7 @@ layout: center
 layout: section
 ---
 
-# контекст ошибки
+# Контекст Ошибки
 
 ## Глава 2: → 2018 →
 
@@ -355,7 +355,7 @@ layout: center
 class: code-fit code-flow
 ---
 
-# И если присмотреться внимательней ...
+# И если присмотреться внимательнее ...
 то можно было увидеть, как оно выполняется:
 <table>
 <tbody>
@@ -407,7 +407,7 @@ layout: center
 class: code-xl code-flow
 ---
 
-# Как отследить Execution Flow ?
+# Как отследить Execution Flow?
 
 ```ts {none|1|1-2|1-3|1-6|1-7|1-9}
 const wrap = function ( cb, ...data ) {
@@ -441,7 +441,7 @@ const serviceInstance = {};
 // обёртка привязана к истории requestInstance
 const w1 = wrap( fn, requestInstance );                  контекст 1
 
-// ПРОБЛЕМА: попытка обернуть с ДРУГИМ контекстом !
+// ПРОБЛЕМА: попытка обернуть с ДРУГИМ контекстом!
 const w2 = wrap( w1, serviceInstance );                  контекст 2
 ```
 
@@ -451,7 +451,7 @@ layout: center
 class: code-fit code-flow
 ---
 
-# И если ещё реальней ... 
+# И если ещё реальнее ... 
 
 ```ts {none|1-3|1-7|1-8|1-10|1-14}
 var saved;
@@ -463,11 +463,11 @@ const onRequest = wrap(( cb ) => {
 
 onRequest( () => doWork () );
 
-// запрос A закончился но cb ~ saved "выжил" и продолжит ...
+// запрос A закончился, но cb ~ saved "выжил" и продолжит ...
 // теперь "протекать" сквозь код в других местах выполнения
 const runJob = wrap(( job ) => job (), serviceInstance);
 
-runJob( saved );                               ← продолжает прилипать к коду !!!
+runJob( saved );                               ← продолжает прилипать к коду!!!
 ```
 
 ---
@@ -493,7 +493,7 @@ image: /img/async_hooks.png
 backgroundSize: 55%
 ---
 
-# Там в 2018 появились async_hooks
+# Там в 2017 появились async_hooks
 
 
 ---
@@ -502,7 +502,7 @@ image: /img/issue249.png
 backgroundSize: 55%
 ---
 
-# В итоге оказалось, оно не работает
+# Оказалось, что оно так не работает
 
 
 ---
@@ -575,7 +575,7 @@ layout: center
 class: code-flow
 ---
 
-# потому, что с ~2020 можно так
+# потому что с ~2020 можно так
 
 ```js {none|1-3|1-7|1-11}
 const { AsyncLocalStorage } = require('node:async_hooks');
@@ -657,7 +657,7 @@ class: code-fit
 
 <v-clicks>
 
-# Direct Acyclic Graph
+# Directed Acyclic Graph
 
 # !== Execution Flow
 
@@ -746,7 +746,7 @@ layout: default
 title: JS_Object_Topology
 ---
 
-<h1 class="text-center">... коротко: JS всё объекты ...</h1>
+<h1 class="text-center">... коротко: JS всё &ndash; объекты ...</h1>
 
 <div class="flex justify-center">
   <img src="/img/JS_Object_Topology.svg" style="filter: invert(1)" width = "90%" />
@@ -767,14 +767,14 @@ image: /img/vitya.png
 backgroundSize: 55%
 ---
 
-# Но, оставалась куча вопросов ...
+# Но оставалась куча вопросов ...
 
 
 ---
 layout: center
 ---
 
-# №1 как сделать : DAG ?
+# №1 как сделать DAG?
 
 <table style = "margin-top: -5%">
 <tbody>
@@ -783,9 +783,9 @@ layout: center
 
 <v-clicks>
 
-- т.к. `setPrototypeOf` &ndash; не подходит
+- т.к. `setPrototypeOf` не подходит
 - и ещё нужны `(...args)` конструкторов
-- и `instanceOf` &laquo;такое себе&raquo; identity ...
+- и `instanceof` &laquo;такое себе&raquo; identity ...
 
 </v-clicks>
 <v-click>
@@ -796,7 +796,7 @@ layout: center
 <v-clicks>
 
 - использовать `Symbol.hasInstance`
-- и &laquo;привязаться&raquo; `constructor.name`
+- и &laquo;привязаться&raquo; к `constructor.name`
 - и использовать Proxy для отслеживания
 - то `new` поможет идентификации
 
@@ -865,7 +865,7 @@ Object.getPrototypeOf( ⟪admin⟫ ); // ⟪user⟫
 
 <v-click>
 
-И &laquo; память &raquo; истории объекта будет в Prototype Chain.
+И &laquo;память&raquo; истории объекта будет в Prototype Chain.
 
 </v-click>
 
@@ -894,7 +894,7 @@ const ⟪User⟫ = define('User', function (data) {
 });
 
 const Admin = ⟪User⟫.define('Admin', function (data) {
-	this.name = data.name;
+	this.role = data.role;
 });
 
 ```
@@ -913,7 +913,7 @@ import { decorate } from 'mnemonica';
 @decorate ()
 class ⟪User⟫ { /.../ };
 
-// predecessor
+// successor
 @decorate ( ⟪User⟫ )
 class Admin { /.../ }
 
@@ -926,9 +926,9 @@ layout: default
 # в Runtime &ndash; это дерево
 
 ```ts
-const user  = new User({ name: 'Ada' });
-const admin = new user.Admin({ role: 'root' });
-const super   = new admin.SuperAdmin();
+const user   = new User({ name: 'Ada' });
+const admin  = new user.Admin({ role: 'root' });
+const master = new admin.SuperAdmin();
 ```
 
 <div class="flex justify-center mt-2">
@@ -998,7 +998,7 @@ layout: center
 
 <v-clicks>
 
-- TypeScript типы &laquo;живут&raquo; до компиляции
+- типы TypeScript &laquo;живут&raquo; до компиляции
 - граф экземпляров Mnemonica &ndash; &laquo;после&raquo;
 - и есть ещё TypeScript декораторы ...
 - для IntelliSense всё это нужно как-то &laquo;подружить&raquo;
@@ -1007,7 +1007,7 @@ layout: center
 </v-clicks>
 
 
---- 
+---
 layout: image
 image: /img/Typeomatica.png
 backgroundSize: 55%
@@ -1029,7 +1029,7 @@ layout: center
 class: code-xl code-flow
 ---
 
-# Паттерн : обычное Identity
+# Паттерн: обычное Identity
 
 ```ts {none|1|1-2|1-4|1-7}
 export type ConstructorDefinition <T> 
@@ -1132,13 +1132,13 @@ interface TypeRegistry {
 layout: default
 ---
 
-# Но как это Контролировать ?
+# Но как это контролировать?
 
 ```ts
-const user  = new User({ name: 'Ada' });
-const admin = new user.Admin({ role: 'root' });
-const super   = new admin.SuperAdmin();
-// Some Person, Other Person, Random Person, Sibling Person
+const user   = new User({ name: 'Ada' });
+const admin  = new user.Admin({ role: 'root' });
+const master = new admin.SuperAdmin();
+// Same Person, Other Person, Random Person, Sibling Person
 ```
 
 <div class="flex justify-center mt-2">
@@ -1178,12 +1178,12 @@ title: Mnemographica 3D
 layout: center
 ---
 
-# И это полезно если
+# И это полезно, если
 
 <v-clicks>
 
-- ## наглядность из запроса `A`,
-- ## выжила в обработчике `N` и ...
+- ## данные из запроса `A`,
+- ## выжили в обработчике `N` и ...
 - ## для ошибки в коде `X` и ...
 - ## это полностью отслеживается
 - ## привычным инструментарием
@@ -1261,7 +1261,7 @@ layout: statement
 
 # <br /> DEMO 2
 
-## Nest.JS: живые трассы
+## NestJS: живые трассы
 
 
 ---
@@ -1344,8 +1344,8 @@ branch + экземпляр <br />+ его аргументы
 </tbody>
 </table>
 
-<p style="padding-left: 1vw">* <b>Unblinder</b> &mdash; обработчик ошибок из @mnemonica/otel: по объекту ошибки восстанавливает экземпляр,
-<br /> &nbsp; его construction аргументы и execution flow и пишет их в Jaeger span</p>
+<p style="padding-left: 1vw">* <b>unblinder</b> &mdash; обработчик ошибок из @mnemonica/otel: по объекту ошибки восстанавливает экземпляр,
+<br /> &nbsp; его construction аргументы и execution flow + пишет их в Jaeger span</p>
 
 <p style="padding-left: 1vw">** примеры таблицы доступны в репозитории https://github.com/mythographica/finecut</p>
 
@@ -1355,7 +1355,7 @@ layout: center
 title: tactica-nestjs
 ---
 
-<GraphOverlay src="/tactica-nestjs-graph.html" title="Electron Graph" />
+<GraphOverlay src="/tactica-nestjs-graph.html" title="NestJS Graph" />
 
 
 ---
@@ -1364,7 +1364,7 @@ layout: statement
 
 # <br /> DEMO 3
 # Exec Flow → DFD
-## aka &laquo; что по там фронту &raquo;
+## aka &laquo;что там по фронту&raquo;
 
 
 ---
@@ -1379,7 +1379,7 @@ title: kbtrainer
 layout: section
 ---
 
-# что это меняет
+# Что это меняет
 
 ---
 layout: center
@@ -1421,7 +1421,7 @@ layout: center
 
 <v-click>
 
-### « It's a genuinely strange and good feeling<br/> to be shown a picture of my own reasoning<br/> about a codebase. »
+### "It's a genuinely strange and good feeling<br/> to be shown a picture of my own reasoning<br/> about a codebase."
 
 </v-click>
 
@@ -1477,7 +1477,7 @@ class: table-fit table-center
 <td class="text-yellow-400">средняя</td>
 <td class="text-red-400 font-bold">очень высокая, аудит</td>
 <td class="text-red-400">высокая</td>
-<td class="text-green-400">аудит</td>
+<td class="text-green-400">ниша <br />аудит</td>
 </tr>
 <tr>
 <td>механизм</td>
