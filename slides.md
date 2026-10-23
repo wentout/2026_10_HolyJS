@@ -222,7 +222,7 @@ class: code-xl
 ```js
 // забыли валидацию, влетел undefined
 
-new Sum (undefined);
+new Sum (obj.nonExistentField);
 
 // TypeError: undefined is not iterable
 ```
