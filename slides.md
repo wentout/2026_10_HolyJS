@@ -82,7 +82,7 @@ layout: cover
 
 ---
 layout: image
-image: /img/open_telemetry.png
+image: ./img/open_telemetry.png
 backgroundSize: 55%
 ---
 
@@ -117,7 +117,7 @@ layout: section
 
 ---
 layout: image
-image: /img/ukit_main.png
+image: ./img/ukit_main.png
 backgroundSize: 55%
 ---
 
@@ -126,7 +126,7 @@ backgroundSize: 55%
 
 ---
 layout: image
-image: /img/team.jpg
+image: ./img/team.jpg
 backgroundSize: 55%
 ---
 
@@ -134,7 +134,7 @@ backgroundSize: 55%
 
 ---
 layout: image
-image: /img/tips.gif
+image: ./img/tips.gif
 backgroundSize: 55%
 ---
 
@@ -143,7 +143,7 @@ backgroundSize: 55%
 
 ---
 layout: image
-image: /img/s500.3.jpg
+image: ./img/s500.3.jpg
 backgroundSize: 55%
 ---
 
@@ -151,7 +151,7 @@ backgroundSize: 55%
 
 ---
 layout: image
-image: /img/real_stack.png
+image: ./img/real_stack.png
 backgroundSize: 55%
 ---
 
@@ -160,7 +160,7 @@ backgroundSize: 55%
 
 ---
 layout: image
-image: /img/giphy.gif
+image: ./img/giphy.gif
 backgroundSize: 55%
 ---
 
@@ -168,7 +168,7 @@ backgroundSize: 55%
 
 ---
 layout: image
-image: /img/chart_tasks_bugs.svg
+image: ./img/chart_tasks_bugs.svg
 backgroundSize: 55%
 class: invert-diagram
 ---
@@ -472,7 +472,7 @@ runJob( saved );                               ← продолжает прил
 
 ---
 layout: image
-image: /img/grafana.jpg
+image: ./img/grafana.jpg
 ---
 
 # ... тема интересовала многих ...
@@ -480,7 +480,7 @@ image: /img/grafana.jpg
 
 ---
 layout: image
-image: /img/DiagGroupSite.png
+image: ./img/DiagGroupSite.png
 backgroundSize: 55%
 ---
 
@@ -489,7 +489,7 @@ backgroundSize: 55%
 
 ---
 layout: image
-image: /img/async_hooks.png
+image: ./img/async_hooks.png
 backgroundSize: 55%
 ---
 
@@ -498,7 +498,7 @@ backgroundSize: 55%
 
 ---
 layout: image
-image: /img/issue249.png
+image: ./img/issue249.png
 backgroundSize: 55%
 ---
 
@@ -529,7 +529,7 @@ setTimeout(() => { data.ref.error; }, 0);
 
 ---
 layout: image
-image: /img/context-dive.png
+image: ./img/context-dive.png
 backgroundSize: 55%
 ---
 
@@ -537,7 +537,7 @@ backgroundSize: 55%
 
 ---
 layout: image
-image: /img/async_zero.png
+image: ./img/async_zero.png
 backgroundSize: 55%
 ---
 
@@ -546,7 +546,7 @@ backgroundSize: 55%
 
 ---
 layout: image
-image: /img/Andrey.png
+image: ./img/Andrey.png
 backgroundSize: 55%
 ---
 
@@ -555,7 +555,7 @@ backgroundSize: 55%
 
 ---
 layout: image
-image: /img/als.png
+image: ./img/als.png
 backgroundSize: 55%
 ---
 
@@ -564,7 +564,7 @@ backgroundSize: 55%
 
 ---
 layout: image
-image: /img/issue249_fin.png
+image: ./img/issue249_fin.png
 backgroundSize: 55%
 ---
 
@@ -612,7 +612,7 @@ setTimeout(() => {
 
 ---
 layout: image
-image: /img/dip.png
+image: ./img/dip.png
 backgroundSize: 45%
 ---
 
@@ -630,7 +630,7 @@ layout: section
 
 ---
 layout: image
-image: /img/Transitive_Closure.svg
+image: ./img/Transitive_Closure.svg
 backgroundSize: 55%
 ---
 
@@ -683,7 +683,7 @@ class: code-fit
 
 ---
 layout: image
-image: /img/GanttProject.png
+image: ./img/GanttProject.png
 backgroundSize: 55%
 ---
 
@@ -692,7 +692,7 @@ backgroundSize: 55%
 
 ---
 layout: image
-image: /img/PrototypeChain.png
+image: ./img/PrototypeChain.png
 backgroundSize: 55%
 ---
 
@@ -726,7 +726,7 @@ Object.setPrototypeOf(
 
 ---
 layout: image
-image: /img/EichObjects.png
+image: ./img/EichObjects.png
 backgroundSize: 55%
 ---
 
@@ -735,7 +735,7 @@ backgroundSize: 55%
 
 ---
 layout: image
-image: /img/inheritance.png
+image: ./img/inheritance.png
 backgroundSize: 55%
 ---
 
@@ -755,7 +755,7 @@ title: JS_Object_Topology
 
 ---
 layout: image
-image: /img/EichNullUndefined.png
+image: ./img/EichNullUndefined.png
 backgroundSize: 55%
 ---
 
@@ -763,7 +763,7 @@ backgroundSize: 55%
 
 ---
 layout: image
-image: /img/vitya.png
+image: ./img/vitya.png
 backgroundSize: 55%
 ---
 
@@ -872,7 +872,7 @@ Object.getPrototypeOf( ⟪admin⟫ ); // ⟪user⟫
 
 ---
 layout: image
-image: /img/Mnemonica.png
+image: ./img/Mnemonica.png
 backgroundSize: 55%
 ---
 
@@ -1009,7 +1009,7 @@ layout: center
 
 ---
 layout: image
-image: /img/Typeomatica.png
+image: ./img/Typeomatica.png
 backgroundSize: 55%
 ---
 
@@ -1017,7 +1017,7 @@ backgroundSize: 55%
 
 ---
 layout: image
-image: /img/TypesInPrototypes.png
+image: ./img/TypesInPrototypes.png
 backgroundSize: 55%
 ---
 
@@ -1193,7 +1193,7 @@ layout: center
 
 ---
 layout: image
-image: /img/open_telemetry.png
+image: ./img/open_telemetry.png
 backgroundSize: 55%
 ---
 
@@ -1504,13 +1504,13 @@ class: table-fit table-center
 
 ---
 layout: image
-image: /img/mnemonica-py.png
+image: ./img/mnemonica-py.png
 backgroundSize: 75%
 ---
 
 ---
 layout: image
-image: /img/mnemonica-go.png
+image: ./img/mnemonica-go.png
 backgroundSize: 75%
 ---
 
