@@ -45,6 +45,34 @@ layout: default
 
 
 ---
+layout: default
+---
+
+# И это моё Десятое HolyJS 
+
+<div class="grid grid-cols-[5fr_4fr] gap-1 items-center" style="margin-top: -2vh">
+<div class="text-lg leading-relaxed pl-4 [&_li]:whitespace-nowrap">
+
+0. 2018 &nbsp; &ndash; &nbsp;  Тонкости Mongoose
+1. 2018 &nbsp; &ndash; &nbsp;  Asynchronous zero
+2. 2020 &nbsp; &ndash; &nbsp;  Chronotope: await Eloquent.Errors
+3. 2021 &nbsp; &ndash; &nbsp;  Strict Types in JavaScript
+4. 2021 &nbsp; &ndash; &nbsp;  JavaScript dependent type lineages
+5. 2021 &nbsp; &ndash; &nbsp;  Multiple inheritance in JavaScript
+6. 2023 &nbsp; &ndash; &nbsp;  Types in Prototypes
+7. 2023 &nbsp; &ndash; &nbsp;  Real DTO
+8. 2024 &nbsp; &ndash; &nbsp;  Pro.Prototypes Workshop
+9. 2026 &nbsp; &ndash; &nbsp;  I Don't Know JavaScript
+
+</div>
+<div class="flex justify-center self-center">
+  <img src="/img/ucircus/faster2.png" class="w-28 rounded-2xl shadow-lg" />
+</div>
+</div>
+
+
+
+---
 layout: cover
 ---
 
@@ -112,13 +140,6 @@ backgroundSize: 55%
 
 # Обычный рабочий процесс
 
----
-layout: image
-image: /img/s500.jpg
-backgroundSize: 55%
----
-
-# Что-то где-то намертво зависало
 
 ---
 layout: image
@@ -224,9 +245,9 @@ class: code-xl code-flow
 ```js {none|1-3|1-5}
 // самый типичный пример
 // твой родной язык JavaScript ?
-const sum = new Sum([ '1', 1 ]);
+const sum = new Sum([ '1', 1 ]); // 11
 // и вот так теряем "почему"
-JSON.parse(JSON.stringify(sum)); // 11
+JSON.parse(JSON.stringify(sum)); 
 ```
 
 <v-clicks>
@@ -279,7 +300,7 @@ layout: center
 class: code-fit
 ---
 
-# Это были времена callback hell
+# 2016 &ndash; это времена callback hell
  и всё выглядело как-то так, <v-click> или через Caolan Async </v-click>
 <table>
 
@@ -383,29 +404,22 @@ async.series([
 
 ---
 layout: center
-class: code-fit 
+class: code-xl code-flow
 ---
 
-# И можно ли обернуть этот flow ?
+# Как отследить Execution Flow ?
 
-этот самый Execution Flow, trace пути выполнения
-
-```ts
+```ts {none|1|1-2|1-3|1-6|1-7|1-9}
 const wrap = function ( cb, ...data ) {
-	// проверяет элементы data
-	// если typeof data [ i ] === 'function'
-	// то wrap'ает такие элементы
-
-	const result = cb.call( this, ...data );
-	// проверяет typeof result и тоже  wrap'ает
-	// если видит, что это function
-	return result;
+	return function ( ...data ) {
+		const result = cb.call( this, ...data );
+		if (result instanceof Function) {
+			return wrap(result);
+		}
+		return result;
+	}
 };
-
 ```
-
-чтобы следить за контекстом ошибки до её появления
-
 
 ---
 layout: center
@@ -416,7 +430,7 @@ class: code-fit code-flow
 
 ```ts {none|1-3|1-5|1-9|1-12|1-14}
 const wrap = function ( cb, ...data ) {
-	// декорирует cb вглубь data
+	// декорирует cb и data "вглубь"
 };
 
 const fn = ( x: number ) => x * 2;                     ← сама работа
@@ -459,7 +473,6 @@ runJob( saved );                               ← продолжает прил
 ---
 layout: image
 image: /img/grafana.jpg
-backgroundSize: 55%
 ---
 
 # ... тема интересовала многих ...
@@ -472,6 +485,16 @@ backgroundSize: 55%
 ---
 
 # Diagnostic Working Group
+
+
+---
+layout: image
+image: /img/async_hooks.png
+backgroundSize: 55%
+---
+
+# Там в 2018 появились async_hooks
+
 
 ---
 layout: image
@@ -487,9 +510,9 @@ layout: center
 class: code-xl code-flow
 ---
 
-# Пример падающей обработки
+# Пример отсутствия контекста
 
-```ts {none|1|1-7|1-10}
+```ts {none|1-3|1-7|1-10}
 // где-то в коде обработки запроса
 const { data } = req;
 
@@ -502,13 +525,7 @@ setTimeout(() => { data.ref.error; }, 0);
 
 ```
 
----
-layout: image
-image: /img/async_hooks.png
-backgroundSize: 55%
----
 
-# В 2018 появились async_hooks
 
 ---
 layout: image
@@ -516,7 +533,7 @@ image: /img/context-dive.png
 backgroundSize: 55%
 ---
 
-# В общем &laquo;запилил&raquo; решение
+# Но я &laquo;запилил&raquo; решение
 
 ---
 layout: image
@@ -542,7 +559,7 @@ image: /img/als.png
 backgroundSize: 55%
 ---
 
-# И где-то в 2019 доделал ALS
+# И в конце 2019 доделал ALS
 
 
 ---
@@ -551,7 +568,7 @@ image: /img/issue249_fin.png
 backgroundSize: 55%
 ---
 
-# Issue закрыл как нерелевантное
+# Issue я закрыл как нерелевантное
 
 ---
 layout: center
@@ -576,20 +593,20 @@ als.run({ req, res });
 
 ---
 layout: center
-class: code-xl
+class: code-xl code-flow
 ---
 
-# Но такое всё равно не работало
+# Но вопрос остался открыт
 
-```ts
+```ts {none|1|1-3|1-4|1-7|1-9}
 const { data } = req;
-
+// отпускаем запрос на волю
 res.send('some response');
-
+// и req в uncaughtException не будет ...
 setTimeout(() => {
-	data.ref.error; // это данные запроса
-	// но самого запроса уже нет в ALS
+	data.ref.error; // uncaughtException
 }, 0);
+// т.к. в ALS самого req уже нет
 ```
 
 
@@ -679,31 +696,27 @@ image: /img/PrototypeChain.png
 backgroundSize: 55%
 ---
 
-# И в JavaScript есть конструкт
+# И в JavaScript есть технология
 
 
 ---
 layout: center
+class: code-xl code-flow
 ---
 
-## идентичность данных
-
-<v-click>
-
-# задаётся через наследование
-
-</v-click>
+## В Prototype Chain идентичность
+## задаётся через наследование
 
 <v-click>
 
 <br />
 
-```ts
+```ts {none|1|1-3|1-7}
 Object.setPrototypeOf(
 	
-	Successor_Instance,  // новая модель
+	Successor,     // новая модель
 	
-	Predecessor_Instance // исходная модель
+	Predecessor    // исходная модель
 
 );
 ```
@@ -717,7 +730,7 @@ image: /img/EichObjects.png
 backgroundSize: 55%
 ---
 
-# И своеобразная философия
+# И есть &laquo;своеобразная&raquo; философия
 
 
 ---
@@ -761,7 +774,7 @@ backgroundSize: 55%
 layout: center
 ---
 
-# Как на этом сделать : DAG ?
+# №1 как сделать : DAG ?
 
 <table style = "margin-top: -5%">
 <tbody>
@@ -839,7 +852,7 @@ class: code-xl code-flow
 transition: none
 ---
 
-# В общем вот как-то так это ...
+# ... и для &laquo;полноты картины&raquo;  ...
 
 ```ts
 // первое поколение
@@ -852,7 +865,7 @@ Object.getPrototypeOf( ⟪admin⟫ ); // ⟪user⟫
 
 <v-click>
 
- А &laquo; память &raquo; истории объекта будет в Prototype Chain.
+И &laquo; память &raquo; истории объекта будет в Prototype Chain.
 
 </v-click>
 
@@ -873,7 +886,7 @@ class: code-lg code-flow
 
 # mnemonica: define()
 
-```ts {none|1|1-2|1-6|1-10}
+```ts {none|1|1-6|1-10}
 import { define } from 'mnemonica';
 
 const ⟪User⟫ = define('User', function (data) {
@@ -893,7 +906,7 @@ class: code-lg code-flow
 
 # mnemonica: @decorate()
 
-```ts {none|1|1-2|1-6|1-10}
+```ts {none|1|1-6|1-10}
 import { decorate } from 'mnemonica';
 
 // root object
@@ -910,12 +923,12 @@ class Admin { /.../ }
 layout: default
 ---
 
-# в Runtime это &ndash; дерево
+# в Runtime &ndash; это дерево
 
 ```ts
 const user  = new User({ name: 'Ada' });
 const admin = new user.Admin({ role: 'root' });
-const god   = new admin.SuperAdmin();
+const super   = new admin.SuperAdmin();
 ```
 
 <div class="flex justify-center mt-2">
@@ -928,7 +941,7 @@ const god   = new admin.SuperAdmin();
 layout: default
 ---
 
-# И это и есть &laquo;Жизненный Цикл&raquo;
+# &laquo;Жизненный Цикл&raquo; данных
 
 <div class="timeline-hl">
 
@@ -994,31 +1007,38 @@ layout: center
 </v-clicks>
 
 
+--- 
+layout: image
+image: /img/Typeomatica.png
+backgroundSize: 55%
+---
+
+# Начал с типизации
+
 ---
 layout: image
 image: /img/TypesInPrototypes.png
 backgroundSize: 55%
 ---
 
-# Про это был отдельный доклад
+# Потом занялся прототипами
 
 
 ---
 layout: center
-class: code-xl
+class: code-xl code-flow
 ---
 
-# С паттерном Identity
+# Паттерн : обычное Identity
 
-
-```ts
+```ts {none|1|1-2|1-4|1-7}
 export type ConstructorDefinition <T> 
-	=	{
-			new(): T
-		} | { 
-			( this: T,
-				...args: unknown[]): void
-		};
+	= {	new(): T } |
+	  { (
+				this: T,
+				...args: unknown[]
+		): void
+	};
 ```
 
 
@@ -1044,7 +1064,23 @@ const define = function <P extends object, T>(
 };
 ```
 
-table
+---
+layout: center
+class: code-xl code-flow
+---
+
+# Основа &ndash; это Pick + Exclude
+
+```ts {none|1|1-3|1-4|1-5|1-7}
+type Proto < Prototype, Type > =
+	Pick<
+		Prototype,
+		Exclude<
+			keyof Prototype, keyof Type
+		>
+	> & Type;
+```
+
 
 ---
 layout: center
@@ -1054,9 +1090,9 @@ layout: center
 
 <v-clicks>
 
-- ## `.apply` &mdash; аргументы как .apply
-- ## `.call`  &mdash; аргументы как .call
-- ## `.bind`  &mdash; отложенный вызов
+- ## `.apply`&nbsp;&ndash; аргументы как .apply
+- ## `.call `&nbsp;&ndash; аргументы как .call
+- ## `.bind `&nbsp;&ndash; отложенный вызов
 
 </v-clicks>
 <br />
@@ -1075,22 +1111,49 @@ export type ConstructorDefinition <T> =
 
 ---
 layout: center
-class: code-xl
+class: code-xl code-flow
 ---
 
-## Поэтому Declaration Merging : Registry
+## Решение &ndash; Declaration Merging 
 
-```ts
+```ts {none|1|1-2|1-3|1-5|1-6|1-9}
 // по исходникам и генерируется реестр
 // далее merge'ится через tsconfig.json
 interface TypeRegistry {
 
-	Root: IDefinitorInstance<'Root', /* … */>
-	User: IDefinitorInstance<'User', /* … */>
-	Admin: IDefinitorInstance<'User.Admin', /* … */>
+	Root  : IDefinitor<'Root',       /* … */>
+	User  : IDefinitor<'Root.User',  /* … */>
+	Admin : IDefinitor<'Root.User.Admin' ...
 
 }
 ```
+
+---
+layout: default
+---
+
+# Но как это Контролировать ?
+
+```ts
+const user  = new User({ name: 'Ada' });
+const admin = new user.Admin({ role: 'root' });
+const super   = new admin.SuperAdmin();
+// Some Person, Other Person, Random Person, Sibling Person
+```
+
+<div class="flex justify-center mt-2">
+<Chart type="tree" class="w-125"
+  :data="{ name: 'User', children: [ { name: 'Admin', children: [ { name: 'SuperAdmin' } ] }, { name: 'Manager' }, { name: 'Guest' }, { name: 'Same Person', children: [ { name: 'Other Person' }] }, { name: 'Random Person' }, { name: 'Sibling Person' } ] }"
+  :opts="{ dy: 20, dx: 100, width: 370, margin: { top: 24, bottom: 12, right: 24, left: 60 } }" />
+</div>
+
+
+---
+layout: section
+---
+
+# Observability &laquo;визуально&raquo;
+
 
 ---
 layout: statement
@@ -1112,44 +1175,106 @@ title: Mnemographica 3D
 
 
 ---
-layout: section
+layout: center
 ---
 
-# Observability &laquo;экспериментально&raquo;
+# И это полезно если
+
+<v-clicks>
+
+- ## наглядность из запроса `A`,
+- ## выжила в обработчике `N` и ...
+- ## для ошибки в коде `X` и ...
+- ## это полностью отслеживается
+- ## привычным инструментарием
+
+</v-clicks>
+
+
+---
+layout: image
+image: /img/open_telemetry.png
+backgroundSize: 55%
+---
+
+# Observability: Open Telemetry
 
 
 ---
 layout: center
 ---
 
-# @mnemonica/dive
-# @mnemonica/otel
+# Построим Observability 
+
 
 ```ts
-// Callback, рождённый в запросе A,
+// Handler, рождённый в запросе A,
 // выжил в сервисе B и рассказывает
 // историю мёртвого запроса A
 ```
 
 <v-clicks>
 
+
+## @mnemonica/dive<br/> @mnemonica/otel
+
 - контекст привязан к идентичности экземпляра
-- пересечение границ видно в графе вызовов
-- ... profit ...
+- идентичность видна в графе вызовов
 
 </v-clicks>
+
+
+---
+layout: center
+class: code-flow
+---
+
+# Но в Back-End есть NestJS
+
+<v-clicks style="margin-top:-2vh">
+
+- NestJS &ndash; крепость: его не переделать
+- адаптер: @mnemonica/nestjs
+
+</v-clicks>
+
+<v-click>
+
+```ts {1|1-3|1-5|1-6|1-9}
+export class MvpController {
+	createWidget (
+		@Body (
+			// mvp импортируется из @mnemonica/nestjs
+			mvp.forType(MvpWidgetType, CreateWidgetDto)
+			// mvp : mnemonica validation pipe
+		) widget: MvpWidget,
+		@Req() req: Request,
+	): object { // ...
+```
+
+</v-click>
+
+
+---
+layout: statement
+---
+
+# <br /> DEMO 2
+
+## Nest.JS: живые трассы
+
 
 ---
 layout: center
 class: table-fit
 ---
 
-# попробовал применять : fine cut
+# результаты, для наглядности 
 
 <table>
 <thead>
 <tr>
-<th></th>
+<th>**</th>
 <th>express / fastify / nest</th>
 <th>они же</th>
 <th>nest</th>
@@ -1159,8 +1284,8 @@ class: table-fit
 <tr>
 <td>OTel wiring</td>
 <td>Node SDK + auto-instrumentations</td>
-<td>@mnemonica/otel</td>
-<td>@mnemonica/nestjs</td>
+<td>@mnemonica/dive<br />@mnemonica/otel</td>
+<td>+<br />@mnemonica/nestjs</td>
 </tr>
 <tr>
 <td>HTTP span на запрос</td>
@@ -1200,12 +1325,12 @@ branch + экземпляр <br />+ его аргументы
 </td>
 <td>
 <span class="text-green-400 font-bold">
-то же самое, + <br /> трасса до ошибки
+то же самое, + <br /> трасса До Ошибки
 </span>
 </td>
 </tr>
 <tr>
-<td>очередь, &laquo;30 секунд спустя&raquo;</td>
+<td>&laquo;30 секунд спустя&raquo;</td>
 <td><carbon-error-filled class="text-red-400 inline" /></td>
 <td><carbon-checkmark-filled class="text-green-400 inline" /></td>
 <td><carbon-checkmark-filled class="text-green-400 inline" /></td>
@@ -1222,44 +1347,8 @@ branch + экземпляр <br />+ его аргументы
 <p style="padding-left: 1vw">* <b>Unblinder</b> &mdash; обработчик ошибок из @mnemonica/otel: по объекту ошибки восстанавливает экземпляр,
 <br /> &nbsp; его construction аргументы и execution flow и пишет их в Jaeger span</p>
 
+<p style="padding-left: 1vw">** примеры таблицы доступны в репозитории https://github.com/mythographica/finecut</p>
 
----
-layout: center
-class: code-flow
----
-
-# @mnemonica/nestjs
-
-<v-clicks style="margin-top:-2vh">
-
-- NestJS &ndash; крепость: его не переделать
-- поэтому инструментируем снаружи, адаптером
-
-</v-clicks>
-
-<v-click>
-
-```ts {none|1|1-3|1-5|1-6|1-9}
-export class MvpController {
-	createWidget (
-		@Body (
-			// mvp импортируется из @mnemonica/nestjs
-			mvp.forType(MvpWidgetType, CreateWidgetDto)
-			// mvp : mnemonica validation pipe
-		) widget: MvpWidget,
-		@Req() req: Request,
-	): object { // ...
-```
-
-</v-click>
-
----
-layout: statement
----
-
-# <br /> DEMO 2
-
-## Nest.JS: живые трассы
 
 ---
 layout: center
@@ -1292,6 +1381,22 @@ layout: section
 
 # что это меняет
 
+---
+layout: center
+---
+
+# <br /> AI пишет код быстрее,<br/> чем мы проверяем
+
+<v-clicks>
+
+- корректность &ndash; это новая &laquo;валюта&raquo;
+- 3D визуализация упрощает понимание
+- `.tactica` &ndash; инструкция для AI &laquo;из коробки&raquo;
+- реестр типов == машиночитаемое намерение
+- итого: совместная человеко-машинная разработка
+
+
+</v-clicks>
 
 ---
 layout: statement
@@ -1312,7 +1417,7 @@ layout: center
 layout: center
 ---
 
-# <br /> <br /> AI доволен
+# <br /> <br /> Агент остался доволен
 
 <v-click>
 
@@ -1320,22 +1425,6 @@ layout: center
 
 </v-click>
 
----
-layout: center
----
-
-# <br /> AI пишет код быстрее,<br/> чем мы проверяем
-
-<v-clicks>
-
-- корректность &ndash; это новая &laquo;валюта&raquo;
-- 3D визуализация упрощает понимание
-- `.tactica` &ndash; инструкция для AI &laquo;из коробки&raquo;
-- реестр типов == машиночитаемое намерение
-- итого: совместная человеко-машинная разработка
-
-
-</v-clicks>
 
 ---
 layout: center
@@ -1344,20 +1433,20 @@ class: table-fit table-center
 
 <center>
 
-# Идея на других языках
+# Применимость идеи в языках
 
 </center>
 
 <br />
 
-<table style="width: 90%">
+<table>
 <thead>
 <tr>
 <th></th>
-<th>JVM, Kotlin, reactive Java</th>
-<th>Python<br />data / ML</th>
 <th>JS / Node</th>
+<th>Python<br />data / ML</th>
 <th>Go</th>
+<th>JVM, Kotlin, reactive Java</th>
 <th>.NET</th>
 <th>Rust</th>
 </tr>
@@ -1367,40 +1456,50 @@ class: table-fit table-center
 <td>неверные данные</td>
 <td class="text-red-400">высокая</td>
 <td class="text-red-400 font-bold">очень высокая</td>
-<td class="text-red-400">высокая</td>
 <td class="text-yellow-400">средняя<br />zero values</td>
+<td class="text-red-400">высокая</td>
 <td class="text-yellow-400">средняя</td>
 <td class="text-green-400">низкая</td>
 </tr>
 <tr>
 <td>потерян async-контекст</td>
-<td class="text-red-400 font-bold">очень высокая<br />reactive, MDC</td>
-<td class="text-yellow-400">средняя</td>
 <td class="text-red-400">высокая</td>
+<td class="text-yellow-400">средняя</td>
 <td class="text-yellow-400">средняя<br />явный <br /><code>ctx</code></td>
+<td class="text-red-400 font-bold">очень высокая, MDC</td>
 <td class="text-green-400">низкая <br />через<br /><code>AsyncLocal</code></td>
 <td class="text-green-400">низкая</td>
 </tr>
 <tr>
 <td>lineage в домене</td>
-<td class="text-red-400 font-bold">очень высокая<br />банки, аудит</td>
-<td class="text-red-400">высокая</td>
-<td class="text-yellow-400">средняя</td>
 <td class="text-yellow-400">средняя</td>
 <td class="text-red-400">высокая</td>
-<td class="text-green-400">ниша<br />аудит</td>
+<td class="text-yellow-400">средняя</td>
+<td class="text-red-400 font-bold">очень высокая, аудит</td>
+<td class="text-red-400">высокая</td>
+<td class="text-green-400">аудит</td>
 </tr>
 <tr>
 <td>механизм</td>
-<td>Kotlin, KSP, <br /><span class="whitespace-nowrap"><code>by</code> delegation</span></td>
-<td><code>__getattr__</code></td>
 <td><b>native</b></td>
+<td><code>__getattr__</code></td>
 <td>embedding</td>
+<td>Kotlin, KSP, <br /><span class="whitespace-nowrap"><code>by</code> delegation</span></td>
 <td>delegation вручную</td>
 <td><code>Deref</code>, macros</td>
 </tr>
 </tbody>
 </table>
+
+<v-click>
+
+<center>
+
+ пока сделал только для Python & Go
+
+</center>
+
+</v-click>
 
 
 ---
@@ -1420,11 +1519,9 @@ backgroundSize: 75%
 layout: default
 ---
 
-<center>
 
 # <a href="https://mythographica.github.io">https://<span style="color: orange">mythographica</span>.github.io</a>
 
-</center>
 
 <div class="grid grid-cols-[7fr_4fr] gap-7 mt-11 items-center">
 <img src="/img/mythographica.png" class="w-full rounded-lg shadow-lg" />
@@ -1436,7 +1533,11 @@ layout: default
 layout: center
 ---
 
-## &nbsp; Доклад стоял &laquo;на плечах гигантов&raquo;
+<center>
+
+## &nbsp; Стоял &laquo;на плечах гигантов&raquo;
+
+</center>
 
 <div class="flex gap-6 items-start justify-center mt-6">
   <figure class="text-center">
@@ -1455,7 +1556,7 @@ layout: center
 
 <center>
 
-# И продолжает стоять ;^)
+# И продолжил стоять ;^)
 
 </center>
 
@@ -1487,8 +1588,7 @@ layout: center
 
 <br />
 
-
-<img src="/img/qrcode_github.com.png" width="55%" />
+<img src="/img/qrcode_github.com.png" width="55%" class="rounded" />
 
 </center>
 
@@ -1496,16 +1596,12 @@ layout: center
 layout: end
 ---
 
-# <br /> <br /> Q & A
+<center>
 
+#  Q & A
 
+<br />
 
+<img src="/img/qrcode_github.com.png" width="55%" class="rounded" />
 
---- 
-hide: true
-layout: image
-image: /img/Typeomatica.png
-backgroundSize: 55%
----
-
-#  библиотека про строгую типизацию
+</center>

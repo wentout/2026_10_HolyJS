@@ -27,6 +27,22 @@ html.dark {
 	border-bottom-style: solid;
 }
 
+/* End (Q & A) slide: the snowflakes canvas is mounted inside the layout
+ * (components/Snowflakes.vue). Take the flakes' container out of the
+ * grid flow and pin it under the slide content, so the flakes fly
+ * BEHIND the QR code instead of covering its dots.
+ */
+.slidev-layout.end > .snowflakes {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+}
+
+.slidev-layout.end > *:not(.snowflakes) {
+	position: relative;
+	z-index: 1;
+}
+
 /* Execution-flow arrows (↓ →) inside code blocks, wrapped by the
  * flow-arrows shiki transformer: red + glow so the flow reads across
  * the room.
@@ -103,20 +119,23 @@ html.dark {
 	font-size: 1.55rem;
 	line-height: 1.2;
 	margin-bottom: 0.5rem;
+	margin-left: 3rem;
 }
 
 .table-fit table {
 	width: 100%;
 	table-layout: fixed;
+	margin-top: -2vh;
 }
 
 .table-fit th,
 .table-fit td {
-	font-size: 0.6rem;
+	font-size: 0.7rem;
 	line-height: 1.25;
-	padding: 0.2rem 0.4rem;
+	padding: 0.3rem 0.5rem;
 	text-align: left;
 	vertical-align: middle;
+	background-color: black;
 }
 
 /* Tables whose columns are values (not prose): add `table-center` next
