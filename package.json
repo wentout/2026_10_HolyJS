@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "slidev --port 3050",
     "build": "slidev build",
-    "pages": "slidev build --out docs && touch docs/.nojekyll",
+    "pages": "slidev build --out docs --base ./ && cp -r img electron-graph.html mnemographica-graph.html real-work-graph.html tactica-nestjs-graph.html docs/ && touch docs/.nojekyll",
     "export": "slidev export"
   },
   "dependencies": {

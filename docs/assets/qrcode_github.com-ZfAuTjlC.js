@@ -1,0 +1,1 @@
+var e=new URL(`qrcode_github.com-ClMYBvty.png`,import.meta.url).href;export{e as t};

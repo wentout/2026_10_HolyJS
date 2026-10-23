@@ -41,7 +41,12 @@ const update = () => {
 
 onMounted(() => {
 	iframe = document.createElement('iframe');
-	iframe.src = props.src;
+	// Resolve leading-slash srcs against the app base so the same build
+	// works served from / (dev, Netlify) and from a subpath (GitHub Pages
+	// with --base ./): BASE_URL is '/' in dev, './' in the pages build.
+	iframe.src = props.src.startsWith('/')
+		? import.meta.env.BASE_URL + props.src.slice(1)
+		: props.src;
 	iframe.title = props.title;
 	iframe.setAttribute('allow', 'autoplay');
 	iframe.style.cssText = 'position:fixed;inset:0;width:100vw;height:100vh;border:0;background:#1e1e1e;z-index:9999;visibility:hidden';

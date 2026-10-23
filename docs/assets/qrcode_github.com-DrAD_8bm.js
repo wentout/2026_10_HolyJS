@@ -1,1 +1,0 @@
-var e=`/assets/qrcode_github.com-ClMYBvty.png`;export{e as t};

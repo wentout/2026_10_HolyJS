@@ -1,1 +1,0 @@
-var e=`/assets/Transitive_Closure-CF9dTw0a.svg`;export{e as t};
