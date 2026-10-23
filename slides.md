@@ -11,7 +11,7 @@ transition: fade-out
 layout: cover
 ---
 
-# Elegant <br />Observability
+# Elegant Observability
 
 ### unchained for JavaScript and Node.js
 
@@ -48,7 +48,7 @@ layout: default
 layout: default
 ---
 
-# И это моё десятое HolyJS 
+# И это десятое HolyJS для меня
 
 <div class="grid grid-cols-[5fr_4fr] gap-1 items-center" style="margin-top: -2vh">
 <div class="text-lg leading-relaxed pl-4 [&_li]:whitespace-nowrap">
